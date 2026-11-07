@@ -40,4 +40,5 @@ export const api = {
   labels: () => request('GET', '/labels'),
   saveLabel: (conversationId, label) => request('PUT', `/labels/${encodeURIComponent(conversationId)}`, label),
   accuracy: (params) => request('GET', `/accuracy${query(params)}`),
+  overview: (params) => request('GET', `/overview${query(params)}`),
 };

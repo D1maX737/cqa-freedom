@@ -1,3 +1,4 @@
+import { api } from '../api.js';
 import { html, mountView } from './ui.js';
 
 const icon = (path) => html`<svg viewBox="0 0 24 24" width="24" height="24" fill="none"
@@ -30,8 +31,98 @@ const features = [
   },
 ];
 
-export function render(container) {
-  mountView(container, html`
+const num = (n) => (n === null || n === undefined ? '—' : n.toLocaleString('ru-RU', { maximumFractionDigits: 2 }));
+const plural = (n, one, few, many) => {
+  const m10 = n % 10;
+  const m100 = n % 100;
+  if (m10 === 1 && m100 !== 11) return one;
+  if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return few;
+  return many;
+};
+const LANGUAGE_NAMES = { RU: 'Русский', KZ: 'Казахский', EN: 'Английский' };
+const cardLink = (id) => html`<a href="?view=card&id=${encodeURIComponent(id)}" data-nav>${id}</a>`;
+
+function summary(o) {
+  if (!o.dialogs) {
+    return html`<div class="empty"><p>Оценок моделью пока нет${o.mock_skipped ? ': оценки в тестовом режиме в сводку не входят' : ''}.
+      <a href="?view=list" data-nav>Загрузите набор и оцените диалоги</a>, и здесь появится сводка.</p></div>`;
+  }
+  const maxLoss = Math.max(...o.losses.map((l) => l.average_lost), 0.01);
+  const maxBucket = Math.max(...o.distribution.map((b) => b.count), 1);
+  return html`
+    <dl class="overview__stats">
+      <div><dt>Средний балл</dt><dd>${num(o.average)}</dd><p>из 100</p></div>
+      <div><dt>Без замечаний</dt><dd>${o.perfect}</dd><p>${plural(o.perfect, 'диалог', 'диалога', 'диалогов')} на 100 баллов</p></div>
+      <div><dt>Ниже 70 баллов</dt><dd>${o.below70}</dd><p>${plural(o.below70, 'диалог', 'диалога', 'диалогов')}</p></div>
+      <div><dt>Грубые ошибки</dt><dd>${o.gross.length}</dd><p>учитываются отдельно от балла</p></div>
+      <div><dt>Открытые апелляции</dt><dd>${o.open_appeals}</dd><p><a href="?view=appeals" data-nav>к очереди</a></p></div>
+    </dl>
+    <div class="overview__grid">
+      <section class="overview__block" aria-labelledby="losses-title">
+        <h3 id="losses-title">Где операторы теряют баллы</h3>
+        <p class="overview__hint">Сколько баллов из 100 критерий отнимает в среднем на диалог, с учётом веса.</p>
+        <ol class="losses">
+          ${o.losses.map((l) => html`<li class="loss" title="${l.id}: в среднем −${num(l.average_lost)} балла, не выполнен полностью в ${l.failed} из ${l.applicable}">
+            <div class="loss__head"><span>${l.id} ${l.title}</span><strong>−${num(l.average_lost)}</strong></div>
+            <div class="loss__track" aria-hidden="true"><span style="width:${(l.average_lost / maxLoss) * 100}%"></span></div>
+            <p class="loss__meta">Не выполнен полностью в ${l.failed} из ${l.applicable}.
+              ${l.example ? html`Например, ${cardLink(l.example.conversation_id)}${l.example.text ? html`: «${l.example.text.length > 110 ? `${l.example.text.slice(0, 110)}…` : l.example.text}»` : ''}` : ''}</p>
+          </li>`)}
+        </ol>
+      </section>
+      <div class="overview__side">
+        <section class="overview__block" aria-labelledby="gross-title">
+          <h3 id="gross-title">Грубые ошибки</h3>
+          ${o.gross.length ? html`<ul class="overview__list">${o.gross.map((g) => html`<li>${cardLink(g.conversation_id)}${g.explanation ? html` — ${g.explanation}` : ''}</li>`)}</ul>`
+            : html`<p class="overview__hint">Не найдено.</p>`}
+        </section>
+        <section class="overview__block" aria-labelledby="dist-title">
+          <h3 id="dist-title">Распределение итогов</h3>
+          <ul class="buckets">${o.distribution.map((b) => html`<li title="${b.label}: ${b.count}">
+            <span class="buckets__label">${b.label}</span>
+            <span class="buckets__track" aria-hidden="true"><span style="width:${(b.count / maxBucket) * 100}%"></span></span>
+            <span class="buckets__count">${b.count}</span>
+          </li>`)}</ul>
+        </section>
+        <section class="overview__block" aria-labelledby="lang-title">
+          <h3 id="lang-title">По языкам</h3>
+          <div class="overview__scroll"><table class="grid overview__table">
+            <thead><tr><th>Язык</th><th class="num">Диалогов</th><th class="num">Средний балл</th><th class="num">Грубых</th></tr></thead>
+            <tbody>${o.by_language.map((l) => html`<tr><td>${LANGUAGE_NAMES[l.language] ?? l.language}</td><td class="num">${l.dialogs}</td>
+              <td class="num">${num(l.average)}</td><td class="num">${l.gross}</td></tr>`)}</tbody>
+          </table></div>
+        </section>
+        <section class="overview__block" aria-labelledby="worst-title">
+          <h3 id="worst-title">Самые низкие баллы</h3>
+          <ol class="overview__list">${o.worst.map((w) => html`<li>${cardLink(w.conversation_id)} — ${num(w.total)}${w.gross ? ', грубая ошибка' : ''}</li>`)}</ol>
+        </section>
+      </div>
+    </div>`;
+}
+
+async function loadSummary(root, state, route) {
+  const target = root.querySelector('[data-overview]');
+  try {
+    const groups = await api.groups();
+    const group = (groups.find((g) => g.group_id === 'DEV') ?? groups[0])?.group_id;
+    const overview = await api.overview({ group });
+    if (route !== state.route) return;
+    target.querySelector('[data-overview-head]').textContent = group ? `Сводка по набору ${group}` : 'Сводка';
+    target.querySelector('[data-overview-meta]').textContent = overview.dialogs
+      ? `Оценено ${overview.dialogs} из ${overview.conversations} диалогов, модель ${overview.models.join(', ')}, чек-лист ${overview.checklist_version_id}. Решения проверяющих учтены.`
+      : '';
+    target.querySelector('[data-overview-body]').innerHTML = String(summary(overview));
+  } catch (error) {
+    if (route !== state.route) return;
+    target.querySelector('[data-overview-body]').innerHTML = String(html`<p class="overview__hint">Сводка не загрузилась: ${error.message}</p>`);
+  } finally {
+    target.removeAttribute('aria-busy');
+  }
+}
+
+export function render(container, state) {
+  const route = state?.route;
+  const root = mountView(container, html`
     <section class="hero" aria-labelledby="overview-title">
       <div class="hero__copy">
         <p class="hero__tag"><span aria-hidden="true"></span> Conversation Quality Analytics</p>
@@ -75,4 +166,13 @@ export function render(container) {
           </a>`)}
       </div>
     </section>`);
+  // Сводка встаёт между первым экраном и разделами, когда придут данные.
+  root.querySelector('.features').insertAdjacentHTML('beforebegin', String(html`<section class="overview" data-overview aria-busy="true" aria-labelledby="overview-summary-title">
+    <header class="overview__head">
+      <h2 id="overview-summary-title" data-overview-head>Сводка</h2>
+      <p data-overview-meta></p>
+    </header>
+    <div data-overview-body><p class="overview__hint">Загрузка…</p></div>
+  </section>`));
+  if (state) loadSummary(root, state, route);
 }

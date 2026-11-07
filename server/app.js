@@ -8,6 +8,7 @@ import { configuredModel } from './llm/index.js';
 import { runEvaluation } from './evaluator/run.js';
 import { normalizeConversation } from './normalize.js';
 import { collectAccuracy } from './accuracy.js';
+import { collectOverview } from './overview.js';
 import { readLabels, saveLabel, validateLabel } from './labels.js';
 import { buildEvaluationView, decisionValues, fragmentFor } from './results.js';
 
@@ -233,6 +234,15 @@ export function createApp({ db, settings, createLlm, kbDocs, fetchImpl = fetch }
     }
     if (db.appeals.decide(appeal.id, { action, new_value: newValue, reason }) === 0) throw new HttpError(409, 'Решение по апелляции уже принято');
     res.json({ appeal: db.appeals.get(appeal.id), evaluation: view(evaluation) });
+  });
+
+  api.get('/overview', (req, res) => {
+    try {
+      res.json(collectOverview(db, { versionId: req.query.version, groupId: req.query.group, allowMock: req.query.allow_mock === '1' }));
+    } catch (error) {
+      if (/не найдена/.test(error.message)) throw new HttpError(404, error.message);
+      throw error;
+    }
   });
 
   // Ручная разметка эталона и точность модели против неё.

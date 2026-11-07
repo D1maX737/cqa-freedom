@@ -344,3 +344,18 @@ test('прецеденты можно выключить настройкой', 
   await evaluated(ctx, ['p1-kz-001']);
   assert.doesNotMatch(prompts[0].system, /Не должно попасть в промпт/);
 });
+
+test('сводка по набору: оценки заглушкой не в счёт без явного разрешения', async (t) => {
+  const ctx = await start();
+  t.after(ctx.close);
+  await ctx.call('POST', '/conversations/import?group=DEV', sample);
+  await evaluated(ctx, ['p1-ru-001', 'p1-kz-001']);
+  const skipped = (await ctx.call('GET', '/overview?group=DEV')).body;
+  assert.equal(skipped.dialogs, 0);
+  assert.equal(skipped.mock_skipped, 2);
+  const overview = (await ctx.call('GET', '/overview?group=DEV&allow_mock=1')).body;
+  assert.equal(overview.dialogs, 2);
+  assert.equal(overview.conversations, 3);
+  assert.equal(overview.checklist_version_id, 'v1');
+  assert.deepEqual(overview.by_language.map((l) => l.language).sort(), ['KZ', 'RU']);
+});
