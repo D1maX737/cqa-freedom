@@ -97,6 +97,8 @@ export function buildEvaluationView(evaluation, checklistVersion, appeals) {
     gross_errors: result.gross_errors,
     // Решения проверяющего по другим диалогам, которые были в промпте.
     precedents: result.precedents ?? [],
+    // Перепроверка рискованных ответов вторым проходом, если была.
+    recheck: result.recheck ?? null,
     appeals,
   };
 }

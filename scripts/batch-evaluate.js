@@ -43,6 +43,7 @@ const summary = await runBatch({
   kbDocs: loadKb(path.join(ROOT, 'server', 'kb')),
   uiLanguage: config.uiLanguage,
   usePrecedents: config.usePrecedents,
+  recheck: config.recheck,
   onProgress: (n, total, e) => console.log(`[${n}/${total}] ${e.conversation_id}: ${e.status}${e.needs_review ? ', на проверку' : ''}${e.error ? ` — ${e.error}` : ''}`),
 });
 

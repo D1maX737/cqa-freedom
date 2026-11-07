@@ -2,6 +2,7 @@ import { allowedAnswers, flagTypes } from '../checklist.js';
 import { normalizeConversation } from '../normalize.js';
 import { buildPrompt, buildRetryPrompt } from './prompt.js';
 import { collectPrecedents } from '../precedents.js';
+import { buildRecheckPrompt, mergeRecheck, riskyCriteria } from './recheck.js';
 import { buildResponseSchema } from './schema.js';
 import { problemCriteria, quoteMatches, validateResponse } from './validate.js';
 
@@ -65,7 +66,7 @@ export function assembleResult(response, checklist, normalized, errors) {
   };
 }
 
-export async function evaluateConversation({ conversation, checklist, llm, kbDocs, uiLanguage, precedents = [] }) {
+export async function evaluateConversation({ conversation, checklist, llm, kbDocs, uiLanguage, precedents = [], recheck = false }) {
   const normalized = normalizeConversation(conversation, { pauseThresholdSec: checklist.settings?.pause_threshold_sec });
   const prompt = { ...buildPrompt({ checklist, normalized, kbDocs, uiLanguage, precedents }), context: { checklist, normalized } };
   const schema = buildResponseSchema(checklist);
@@ -92,7 +93,33 @@ export async function evaluateConversation({ conversation, checklist, llm, kbDoc
     }
   }
 
+  // Второй проход по рискованным ответам: берётся, только если не хуже первого по проверке.
+  let recheckInfo;
+  if (recheck && best.json && badness(errors) !== Infinity) {
+    const risky = riskyCriteria(best.json, checklist);
+    if (risky.criteria.length || risky.gross) {
+      recheckInfo = { criteria: risky.criteria, gross: risky.gross, changed: [] };
+      attempts += 1;
+      try {
+        const second = await llm.evaluate(buildRecheckPrompt(prompt, best.json, risky), schema);
+        responses.push(second);
+        const { merged, changed } = mergeRecheck(best.json, second.json, risky);
+        const mergedErrors = validate({ json: merged });
+        if (badness(mergedErrors) <= badness(errors)) {
+          best = { ...best, json: merged };
+          errors = mergedErrors;
+          recheckInfo.changed = changed;
+        } else {
+          recheckInfo.kept_first = true;
+        }
+      } catch (error) {
+        recheckInfo.error = error.message;
+      }
+    }
+  }
+
   const result = assembleResult(best.json, checklist, normalized, errors);
+  if (recheckInfo) result.recheck = recheckInfo;
   // Какие решения проверяющего были в промпте: видно в карточке.
   if (precedents.length) result.precedents = precedents.map(({ appeal_id, conversation_id, criterion_id }) => ({ appeal_id, conversation_id, criterion_id }));
   const sum = (key) => responses.reduce((total, r) => total + (r.usage?.[key] ?? 0), 0);
@@ -109,7 +136,7 @@ export async function evaluateConversation({ conversation, checklist, llm, kbDoc
   };
 }
 
-export async function runEvaluation({ db, llm, evaluationId, kbDocs, uiLanguage, usePrecedents = true }) {
+export async function runEvaluation({ db, llm, evaluationId, kbDocs, uiLanguage, usePrecedents = true, recheck = false }) {
   const evaluation = db.evaluations.get(evaluationId);
   db.evaluations.markRunning(evaluationId);
   try {
@@ -121,6 +148,7 @@ export async function runEvaluation({ db, llm, evaluationId, kbDocs, uiLanguage,
       kbDocs,
       uiLanguage,
       precedents: usePrecedents ? collectPrecedents(db, { checklist, conversationId: evaluation.conversation_id }) : [],
+      recheck,
     });
     db.evaluations.finish(evaluationId, outcome);
   } catch (error) {

@@ -33,7 +33,7 @@ export function createApp({ db, settings, createLlm, kbDocs, fetchImpl = fetch }
   const queue = createEvaluationQueue({
     concurrency: settings.llmConcurrency,
     run: ({ evaluationId, llm }) => runEvaluation({
-      db, llm, evaluationId, kbDocs, uiLanguage: settings.uiLanguage, usePrecedents: settings.usePrecedents !== false,
+      db, llm, evaluationId, kbDocs, uiLanguage: settings.uiLanguage, usePrecedents: settings.usePrecedents !== false, recheck: settings.recheck === true,
     }),
   });
 

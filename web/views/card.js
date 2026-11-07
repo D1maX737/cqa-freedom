@@ -104,6 +104,12 @@ function appealBlock(c, evaluation, role) {
   </details>`;
 }
 
+/** Ответ, который второй проход («контролёр») изменил: видно, что было в первом. */
+function recheckNote(c, evaluation, demo) {
+  const change = demo ? null : evaluation.recheck?.changed?.find((x) => x.id === c.id);
+  return change ? html`<p class="precedent-note">Исправлено при перепроверке: в первом проходе было «${answerText(change.from, c)}».</p>` : '';
+}
+
 /** Решения проверяющего по другим диалогам, которые модель видела в промпте для этого критерия. */
 function precedentNote(c, evaluation, demo) {
   const used = demo ? [] : (evaluation.precedents ?? []).filter((p) => p.criterion_id === c.id);
@@ -148,6 +154,7 @@ function criterionBlock(c, evaluation, context) {
     </header>
     <p class="crit__nums">${weightLine(c)}</p>
     ${precedentNote(c, evaluation, demo)}
+    ${recheckNote(c, evaluation, demo)}
     ${rule ? html`<details class="crit__rule" ${['bad', 'partial', 'na'].includes(tone) ? 'open' : ''}>
       <summary>${scaleStep ? 'Что означает уровень по шкале' : 'Условие чек-листа'}</summary>
       <p>${rule}</p>
