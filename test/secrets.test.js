@@ -14,6 +14,14 @@ test('ключ Google AI Studio считается секретом', () => {
   assert.equal(findSecrets('a.js', `const k = "AIza${'B'.repeat(35)}"`).length, 1);
 });
 
+test('ключ Google нового формата (AQ.) считается секретом', () => {
+  assert.equal(findSecrets('a.js', `const k = "AQ.${'Ab1_-'.repeat(10)}"`).length, 1);
+});
+
+test('слово с AQ. без длинного хвоста не считается ключом', () => {
+  assert.equal(findSecrets('README.md', 'ключ начинается с `AQ.` или `AIza`').length, 0);
+});
+
 test('упоминание параметра sig без значения разрешено', () => {
   assert.equal(findSecrets('README.md', 'Ссылка содержит подпись `sig=...`').length, 0);
 });

@@ -27,7 +27,7 @@ npm test
 
 ```
 LLM_PROVIDER=gemini
-GEMINI_API_KEY=AIza...
+GEMINI_API_KEY=ваш_ключ
 GEMINI_MODEL=gemma-4-31b-it
 GEMINI_RPM=15
 ```
