@@ -12,6 +12,12 @@ const num = (value, fallback) => {
   return Number.isFinite(n) && n > 0 ? n : fallback;
 };
 
+// Как num, но 0 — допустимое значение.
+const count = (value, fallback) => {
+  const n = Number(value);
+  return value !== undefined && value !== '' && Number.isFinite(n) && n >= 0 ? n : fallback;
+};
+
 export const config = {
   port: num(process.env.PORT, 3000),
   // Авторизации нет, поэтому по умолчанию сервис доступен только с этой машины.
@@ -24,6 +30,11 @@ export const config = {
   anthropicApiKey: process.env.ANTHROPIC_API_KEY || '',
   anthropicModel: process.env.ANTHROPIC_MODEL || 'claude-opus-5-5',
   anthropicEffort: process.env.ANTHROPIC_EFFORT || 'high',
+  geminiApiKey: process.env.GEMINI_API_KEY || '',
+  geminiModel: process.env.GEMINI_MODEL || 'gemma-4-31b-it',
+  geminiThinking: process.env.GEMINI_THINKING || '',
+  // Запросов в минуту на бесплатном тарифе; 0 — без ограничения.
+  geminiRpm: count(process.env.GEMINI_RPM, 15),
   llmConcurrency: num(process.env.LLM_CONCURRENCY, 4),
   uiLanguage: process.env.UI_LANGUAGE || 'RU',
 };

@@ -4,6 +4,7 @@ import { ROOT } from './config.js';
 import { checklistWarnings, loadSeedChecklist, totalWeight, validateChecklist } from './checklist.js';
 import { fetchDataset, normalizeImportBody, resolveAudioUrl } from './datasource.js';
 import { createEvaluationQueue } from './evaluator/queue.js';
+import { configuredModel } from './llm/index.js';
 import { runEvaluation } from './evaluator/run.js';
 import { normalizeConversation } from './normalize.js';
 import { buildEvaluationView, decisionValues, fragmentFor } from './results.js';
@@ -62,7 +63,7 @@ export function createApp({ db, settings, createLlm, kbDocs, fetchImpl = fetch }
   api.get('/health', (req, res) => {
     res.json({
       provider: settings.llmProvider,
-      model: settings.llmProvider === 'anthropic' ? settings.anthropicModel : 'mock-deterministic',
+      model: configuredModel(settings),
       dataset_configured: Boolean(settings.datasetUrl),
       queue: queue.size(),
     });

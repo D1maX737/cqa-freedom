@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 const CONTENT_RULES = [
   { name: 'подпись URL (sig=)', pattern: /\bsig=[A-Za-z0-9_%-]{20,}/ },
   { name: 'ключ Anthropic', pattern: /sk-ant-[A-Za-z0-9_-]{10,}/ },
+  { name: 'ключ Google AI Studio', pattern: /AIza[0-9A-Za-z_-]{35}/ },
 ];
 
 const FORBIDDEN_PATHS = [

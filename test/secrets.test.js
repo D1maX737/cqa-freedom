@@ -10,6 +10,10 @@ test('ключ Anthropic считается секретом', () => {
   assert.equal(findSecrets('a.js', `const k = "sk-ant-${'a'.repeat(20)}"`).length, 1);
 });
 
+test('ключ Google AI Studio считается секретом', () => {
+  assert.equal(findSecrets('a.js', `const k = "AIza${'B'.repeat(35)}"`).length, 1);
+});
+
 test('упоминание параметра sig без значения разрешено', () => {
   assert.equal(findSecrets('README.md', 'Ссылка содержит подпись `sig=...`').length, 0);
 });
