@@ -5,9 +5,13 @@ import * as list from './views/list.js';
 import * as card from './views/card.js';
 import * as appeals from './views/appeals.js';
 import * as checklists from './views/checklist-editor.js';
+import * as accuracy from './views/accuracy.js';
+import * as label from './views/label.js';
 
-const VIEWS = { home, list, card, appeals, checklists };
-const NAV = [['home', 'Обзор'], ['list', 'Диалоги'], ['appeals', 'Апелляции'], ['checklists', 'Чек-листы']];
+const VIEWS = { home, list, card, appeals, checklists, accuracy, label };
+const NAV = [['home', 'Обзор'], ['list', 'Диалоги'], ['appeals', 'Апелляции'], ['checklists', 'Чек-листы'], ['accuracy', 'Точность']];
+// Вложенные экраны подсвечивают свой раздел в меню.
+const PARENT = { card: 'list', label: 'accuracy' };
 
 const brand = html`<a class="brand" href="?view=home" data-nav aria-label="Freedom Broker CQA — обзор">
   <img src="${new URL('./brand.svg', import.meta.url).href}" width="28" height="32" alt="">
@@ -90,7 +94,7 @@ export function mount(container) {
     const route = state.route;
     const { view } = route;
     for (const link of container.querySelectorAll('.tabs a')) {
-      const active = link.dataset.view === view || (view === 'card' && link.dataset.view === 'list');
+      const active = link.dataset.view === view || link.dataset.view === PARENT[view];
       if (active) link.setAttribute('aria-current', 'page');
       else link.removeAttribute('aria-current');
     }

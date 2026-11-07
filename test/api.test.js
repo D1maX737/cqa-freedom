@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 import { createApp } from '../server/app.js';
 import { openDb } from '../server/db.js';
 import { createMockLlm } from '../server/llm/mock.js';
@@ -248,4 +250,45 @@ test('загрузка набора без DATASET_URL даёт понятную
   const r = await ctx.call('POST', '/datasets/DEV/fetch');
   assert.equal(r.status, 502);
   assert.match(r.body.error, /DATASET_URL/);
+});
+
+test('разметка эталона: сохраняется в файл размечающего и сравнивается с исходной оценкой модели', async (t) => {
+  const labelsDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cqa-api-labels-'));
+  const ctx = await start({ settings: { labelsDir, tuningIds: ['p1-ru-001'] } });
+  t.after(ctx.close);
+  await ctx.call('POST', '/conversations/import?group=DEV', sample);
+  const [id] = await evaluated(ctx, ['p1-ru-001']);
+  const { answers } = (await ctx.call('GET', `/evaluations/${id}`)).body.original;
+  const criteria = Object.fromEntries(Object.entries(answers).map(([k, v]) => [k, { value: v }]));
+
+  const saved = await ctx.call('PUT', '/labels/p1-ru-001', { labeler: 'Дима', checklist_version_id: 'v1', criteria });
+  assert.equal(saved.status, 200, JSON.stringify(saved.body));
+  assert.ok(fs.existsSync(path.join(labelsDir, 'дима.json')));
+  assert.equal((await ctx.call('GET', '/labels')).body.labels.length, 1);
+
+  // Заглушка — не модель: без явного разрешения её оценки в точность не попадают.
+  const skipped = (await ctx.call('GET', '/accuracy?group=DEV&version=v1')).body;
+  assert.equal(skipped.coverage.compared, 0);
+  assert.equal(skipped.mock_skipped, 1);
+
+  const report = (await ctx.call('GET', '/accuracy?group=DEV&version=v1&allow_mock=1')).body;
+  assert.deepEqual(report.coverage, { conversations: 3, labeled: 1, evaluated: 1, compared: 1 });
+  assert.equal(report.overall.rate, 1);
+  assert.equal(report.by_split.tuning.cells, 8);
+  assert.equal(report.checklist_version_id, 'v1');
+});
+
+test('разметка отклоняется без имени, с пропуском критерия и для неизвестного диалога', async (t) => {
+  const labelsDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cqa-api-labels-'));
+  const ctx = await start({ settings: { labelsDir } });
+  t.after(ctx.close);
+  await ctx.call('POST', '/conversations/import?group=DEV', sample);
+  const criteria = { c1: { value: 'yes' } };
+  const noName = await ctx.call('PUT', '/labels/p1-ru-001', { labeler: '', checklist_version_id: 'v1', criteria });
+  assert.equal(noName.status, 400);
+  const partial = await ctx.call('PUT', '/labels/p1-ru-001', { labeler: 'dima', checklist_version_id: 'v1', criteria });
+  assert.equal(partial.status, 400);
+  assert.match(partial.body.error, /c8/);
+  assert.equal((await ctx.call('PUT', '/labels/nope', { labeler: 'dima', checklist_version_id: 'v1', criteria })).status, 404);
+  assert.deepEqual(fs.readdirSync(labelsDir), []);
 });

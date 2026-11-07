@@ -26,7 +26,7 @@ function citationMap(evaluation, changes) {
 
 const messageTime = (message, isVoice) => isVoice ? clock(message.t_sec) : message.timestamp;
 
-function messageRow(m, cites, isVoice) {
+export function messageRow(m, cites, isVoice) {
   return html`<article class="msg msg--${m.speaker}" id="${m.id}" tabindex="-1">
     <div class="msg__cites">
       ${(cites ?? []).map((c) => html`<a class="cite cite--${c.kind}" href="#crit-${c.id}" data-crit="${c.id}"
@@ -205,7 +205,7 @@ function resultPanel(evaluation, evaluations, versions, context) {
       ${s.criteria.map((c) => criterionBlock(c, evaluation, context))}</section>`)}`;
 }
 
-function seek(audio, sec, { play }) {
+export function seek(audio, sec, { play }) {
   const go = () => {
     audio.currentTime = Math.max(0, sec - 2);
     if (play) audio.play().catch(() => {});

@@ -18,6 +18,11 @@ const count = (value, fallback) => {
   return value !== undefined && value !== '' && Number.isFinite(n) && n >= 0 ? n : fallback;
 };
 
+function readTuningIds(file) {
+  if (!fs.existsSync(file)) return [];
+  return JSON.parse(fs.readFileSync(file, 'utf8')).conversation_ids ?? [];
+}
+
 export const config = {
   port: num(process.env.PORT, 3000),
   // Авторизации нет, поэтому по умолчанию сервис доступен только с этой машины.
@@ -39,4 +44,8 @@ export const config = {
   geminiTimeoutSec: num(process.env.GEMINI_TIMEOUT_SEC, 90),
   llmConcurrency: num(process.env.LLM_CONCURRENCY, 4),
   uiLanguage: process.env.UI_LANGUAGE || 'RU',
+  // Ручная разметка эталона: по файлу на размечающего, хранится в репозитории.
+  labelsDir: process.env.LABELS_DIR || path.join(ROOT, 'eval', 'labels'),
+  // Диалоги, на которых настраивали промпт: точность по ним считается отдельно.
+  tuningIds: readTuningIds(path.join(ROOT, 'eval', 'tuning.json')),
 };

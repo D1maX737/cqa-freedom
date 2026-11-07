@@ -608,6 +608,52 @@ body.cqa-page { margin: 0; }
   .cqa .triple { grid-template-columns: 1fr; }
 }
 
+/* Точность и разметка */
+.cqa .acc-lead { flex-basis: 100%; max-width: 70ch; color: var(--ink-soft); }
+.cqa .acc-queue { display: grid; gap: 10px; margin-bottom: 24px; }
+.cqa .acc-queue h2, .cqa .acc-results h2 { font-size: 18px; font-weight: 700; }
+.cqa .acc-queue__form { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+.cqa .acc-hint { font-size: 13px; max-width: 80ch; }
+.cqa .acc-hint code { font-size: 12px; }
+.cqa .acc-results { display: grid; gap: 14px; }
+.cqa .acc-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(170px, 100%), 1fr)); gap: 1px; margin: 0;
+  background: var(--line); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.cqa .acc-stats > div { display: grid; gap: 2px; align-content: start; padding: 14px 16px; background: var(--surface); }
+.cqa .acc-stats dt { font-size: 13px; color: var(--muted); }
+.cqa .acc-stats dd { margin: 0; font-size: 30px; line-height: 1.15; font-weight: 750; letter-spacing: -0.02em; color: var(--spruce-strong); }
+.cqa .acc-stats p { font-size: 13px; color: var(--ink-soft); }
+.cqa .acc-stats > div:first-child { background: var(--mint); }
+.cqa .acc-note { font-size: 13px; max-width: 90ch; }
+.cqa .acc-tables { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 14px; align-items: start; }
+.cqa .acc-tables__side { display: grid; gap: 14px; }
+.cqa .acc-caption { caption-side: top; text-align: left; padding: 12px 12px 4px; font-weight: 700; font-size: 15px; }
+.cqa .acc-mismatches summary { cursor: pointer; font-weight: 600; color: var(--spruce); margin-bottom: 8px; }
+
+.cqa .label-blind { margin-bottom: 16px; padding: 8px 12px; border-radius: var(--radius); background: var(--amber-bg); color: var(--amber); font-size: 14px; }
+.cqa .label-form { gap: 18px; }
+.cqa .label-group { display: grid; gap: 10px; }
+.cqa .label-group h3 { font-size: 15px; font-weight: 650; color: var(--ink-soft); }
+.cqa .label-crit { display: grid; gap: 8px; margin: 0; padding: 12px 14px; border: 1px solid var(--line); border-left-width: 4px; border-radius: var(--radius); }
+.cqa .label-crit.is-missing { border-color: var(--brick); background: var(--brick-bg); }
+.cqa .label-crit legend { padding: 0 4px; margin-left: -4px; font-size: 15px; font-weight: 600; }
+.cqa .label-crit__def, .cqa .label-crit__na { font-size: 14px; color: var(--ink-soft); }
+.cqa .label-crit__options { display: flex; flex-wrap: wrap; gap: 6px; }
+.cqa .label-crit__options--scale { display: grid; }
+.cqa .label-opt { display: flex; align-items: flex-start; gap: 8px; padding: 6px 12px; border: 1px solid var(--line-strong); border-radius: 10px;
+  background: var(--surface); cursor: pointer; font-size: 14px; }
+.cqa .label-opt:hover { border-color: var(--spruce); }
+.cqa .label-opt:has(input:checked) { border-color: var(--spruce); background: var(--mint); }
+.cqa .label-opt input { margin-top: 3px; }
+.cqa .label-opt__hint { display: block; font-size: 13px; color: var(--ink-soft); }
+.cqa .label-crit__subtypes { margin: 6px 0 0; padding-left: 18px; font-size: 13px; }
+.cqa .label-crit__extra { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; font-size: 13px; color: var(--ink-soft); }
+.cqa .label-crit__note { flex: 1; min-width: 160px; }
+.cqa .label-error { padding: 8px 12px; border-radius: var(--radius); background: var(--brick-bg); color: var(--brick); font-size: 14px; }
+.cqa .label-actions { position: sticky; bottom: -24px; display: flex; flex-wrap: wrap; gap: 10px; padding: 12px 0; background: var(--surface); border-top: 1px solid var(--line); }
+@media (max-width: 900px) {
+  .cqa .acc-tables { grid-template-columns: minmax(0, 1fr); }
+}
+
 /* Очередь апелляций */
 .cqa .seg { display: inline-flex; border: 1px solid var(--line-strong); border-radius: var(--radius); overflow: hidden; background: var(--surface); }
 .cqa .seg button { font: inherit; font-size: 14px; padding: 6px 14px; border: 0; background: transparent; color: var(--ink-soft); cursor: pointer; }

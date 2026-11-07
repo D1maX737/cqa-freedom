@@ -7,6 +7,8 @@ import { createEvaluationQueue } from './evaluator/queue.js';
 import { configuredModel } from './llm/index.js';
 import { runEvaluation } from './evaluator/run.js';
 import { normalizeConversation } from './normalize.js';
+import { collectAccuracy } from './accuracy.js';
+import { readLabels, saveLabel, validateLabel } from './labels.js';
 import { buildEvaluationView, decisionValues, fragmentFor } from './results.js';
 
 class HttpError extends Error {
@@ -229,6 +231,48 @@ export function createApp({ db, settings, createLlm, kbDocs, fetchImpl = fetch }
     }
     if (db.appeals.decide(appeal.id, { action, new_value: newValue, reason }) === 0) throw new HttpError(409, 'Решение по апелляции уже принято');
     res.json({ appeal: db.appeals.get(appeal.id), evaluation: view(evaluation) });
+  });
+
+  // Ручная разметка эталона и точность модели против неё.
+  const labelsDir = () => {
+    if (!settings.labelsDir) throw new HttpError(500, 'Не задан каталог разметки');
+    return settings.labelsDir;
+  };
+
+  api.get('/labels', (req, res) => res.json({ labels: readLabels(labelsDir()) }));
+
+  api.put('/labels/:conversationId', (req, res) => {
+    const conversation = db.conversations.get(req.params.conversationId);
+    if (!conversation) throw new HttpError(404, 'Диалог не найден');
+    const labeler = requireText(req.body?.labeler, 'Укажите, кто размечает');
+    const version = db.checklists.get(req.body.checklist_version_id);
+    if (!version) throw new HttpError(400, 'Неизвестная версия чек-листа');
+    const errors = validateLabel(req.body, version.config);
+    if (errors.length) throw new HttpError(400, `Разметка неполная: ${errors.join('; ')}`, { errors });
+    try {
+      res.json(saveLabel(labelsDir(), labeler, conversation.conversation_id, { checklist_version_id: version.id, criteria: req.body.criteria }));
+    } catch (error) {
+      if (/имя/.test(error.message)) throw new HttpError(400, error.message);
+      throw error;
+    }
+  });
+
+  api.get('/accuracy', (req, res) => {
+    let report;
+    try {
+      report = collectAccuracy(db, {
+        versionId: req.query.version,
+        groupId: req.query.group,
+        labels: readLabels(labelsDir()),
+        tuningIds: settings.tuningIds ?? [],
+        allowMock: req.query.allow_mock === '1',
+      });
+    } catch (error) {
+      if (/не найдена/.test(error.message)) throw new HttpError(404, error.message);
+      throw error;
+    }
+    const { checklist, ...body } = report;
+    res.json(body);
   });
 
   app.use('/api', api);

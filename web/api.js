@@ -37,4 +37,7 @@ export const api = {
   createAppeal: (evaluationId, criterionId, comment) => request('POST', '/appeals', { evaluation_id: evaluationId, criterion_id: criterionId, comment }),
   appeals: (status) => request('GET', `/appeals${query({ status })}`),
   decide: (appealId, decision) => request('POST', `/appeals/${encodeURIComponent(appealId)}/decision`, decision),
+  labels: () => request('GET', '/labels'),
+  saveLabel: (conversationId, label) => request('PUT', `/labels/${encodeURIComponent(conversationId)}`, label),
+  accuracy: (params) => request('GET', `/accuracy${query(params)}`),
 };
