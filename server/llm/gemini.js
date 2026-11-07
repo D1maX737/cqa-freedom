@@ -61,12 +61,20 @@ export function createGeminiLlm({
   async function call(prompt, schema) {
     for (let attempt = 0; ; attempt += 1) {
       await waitForSlot();
-      const response = await fetchImpl(`${BASE_URL}/models/${encodeURIComponent(model)}:generateContent`, {
-        method: 'POST',
-        headers: { 'content-type': 'application/json', 'x-goog-api-key': geminiApiKey },
-        body: JSON.stringify(requestBody(prompt, schema)),
-        signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
-      });
+      let response;
+      try {
+        response = await fetchImpl(`${BASE_URL}/models/${encodeURIComponent(model)}:generateContent`, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json', 'x-goog-api-key': geminiApiKey },
+          body: JSON.stringify(requestBody(prompt, schema)),
+          signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+        });
+      } catch (error) {
+        // Обрыв сети, DNS или тайм-аут: ответа нет вовсе, повторяем как 5xx.
+        if (attempt >= maxRetries) throw new Error(`Gemini API: нет ответа после ${attempt + 1} попыток — ${error.message}`);
+        await sleep(retryDelayMs(null, attempt));
+        continue;
+      }
       if (response.ok) return response.json();
 
       const body = await response.json().catch(() => null);

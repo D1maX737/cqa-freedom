@@ -158,3 +158,19 @@ test('retryDelayMs: секунды из RetryInfo или экспонента с
   assert.equal(retryDelayMs({}, 0), 5000);
   assert.equal(retryDelayMs(null, 10), 60000);
 });
+
+test('обрыв сети и тайм-аут повторяются, как 5xx', async () => {
+  const { sent, fetchImpl } = fakeFetch(ok());
+  let failures = [new TypeError('fetch failed'), new DOMException('The operation was aborted due to timeout', 'TimeoutError')];
+  const flaky = async (...args) => {
+    if (failures.length) throw failures.shift();
+    return fetchImpl(...args);
+  };
+  const clock = fakeClock();
+  const out = await llmWith(flaky, { clock }).evaluate(prompt, schema);
+  assert.deepEqual(out.json, { criteria: [] });
+  assert.equal(sent.length, 1);
+  assert.deepEqual(clock.sleeps, [5000, 10000]);
+  failures = Array.from({ length: 3 }, () => new TypeError('fetch failed'));
+  await assert.rejects(llmWith(flaky, { maxRetries: 2 }).evaluate(prompt, schema), /Gemini API: нет ответа.*fetch failed/);
+});

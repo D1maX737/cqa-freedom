@@ -31,10 +31,10 @@ export const config = {
   anthropicModel: process.env.ANTHROPIC_MODEL || 'claude-opus-5-5',
   anthropicEffort: process.env.ANTHROPIC_EFFORT || 'high',
   geminiApiKey: process.env.GEMINI_API_KEY || '',
-  geminiModel: process.env.GEMINI_MODEL || 'gemini-3.6-flash',
+  geminiModel: process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite',
   geminiThinking: process.env.GEMINI_THINKING || '',
   // Запросов в минуту на бесплатном тарифе; 0 — без ограничения.
-  geminiRpm: count(process.env.GEMINI_RPM, 10),
+  geminiRpm: count(process.env.GEMINI_RPM, 14),
   llmConcurrency: num(process.env.LLM_CONCURRENCY, 4),
   uiLanguage: process.env.UI_LANGUAGE || 'RU',
 };
