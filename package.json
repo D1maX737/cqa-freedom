@@ -13,7 +13,8 @@
     "batch": "node scripts/batch-evaluate.js",
     "export": "node scripts/export-results.js",
     "prepare": "git config core.hooksPath .githooks || true",
-    "accuracy": "node scripts/accuracy.js"
+    "accuracy": "node scripts/accuracy.js",
+    "preflight": "node scripts/preflight.js"
   },
   "type": "module",
   "private": true,

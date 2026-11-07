@@ -92,6 +92,8 @@ export async function render(container, state) {
   if (route !== state.route) return;
 
   const conv = data.conversation;
+  // Открыли по ссылке без настроенной очереди — очередь из набора этого диалога.
+  if (!queue.group) conversations = conversations.filter((c) => c.group_id === conv.group_id);
   const isVoice = conv.channel === 'voice call';
   const labeler = labelPrefs.labeler();
   const mine = labels.find((l) => l.conversation_id === id && l.labeler === labeler.trim().toLowerCase().replace(/\s+/g, '-'));

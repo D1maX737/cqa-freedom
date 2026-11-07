@@ -172,7 +172,7 @@ export function render(container, state) {
       <h2 id="overview-summary-title" data-overview-head>Сводка</h2>
       <p data-overview-meta></p>
     </header>
-    <div data-overview-body><p class="overview__hint">Загрузка…</p></div>
+    <div class="overview__body" data-overview-body><p class="overview__hint">Загрузка…</p></div>
   </section>`));
   if (state) loadSummary(root, state, route);
 }

@@ -38,6 +38,10 @@ try {
 
 const concurrency = args.concurrency || config.llmConcurrency;
 console.log(`Оцениваю ${ids.length} диалогов ${args.group} версией ${version.id}: ${llm.name} (${llm.model}), параллельно ${concurrency}`);
+const decisions = db.appeals.list('decided').filter((a) => a.action === 'change').length;
+if (config.usePrecedents && decisions) {
+  console.log(`В промпт попадут прецеденты из решений по апелляциям (в базе ${decisions}). Если это тестовые решения, остановите и запустите с PRECEDENTS=0.`);
+}
 const summary = await runBatch({
   db, llm, ids, versionId: version.id, concurrency,
   kbDocs: loadKb(path.join(ROOT, 'server', 'kb')),
