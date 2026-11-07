@@ -292,3 +292,55 @@ test('разметка отклоняется без имени, с пропус
   assert.equal((await ctx.call('PUT', '/labels/nope', { labeler: 'dima', checklist_version_id: 'v1', criteria })).status, 404);
   assert.deepEqual(fs.readdirSync(labelsDir), []);
 });
+
+test('решение по апелляции становится прецедентом в промпте других диалогов, но не того же', async (t) => {
+  const prompts = [];
+  const ctx = await start({
+    createLlm: async () => {
+      const llm = createMockLlm();
+      const original = llm.evaluate;
+      llm.evaluate = (prompt, schema) => { prompts.push(prompt); return original(prompt, schema); };
+      return llm;
+    },
+  });
+  t.after(ctx.close);
+  await ctx.call('POST', '/conversations/import?group=DEV', sample);
+  const [first] = await evaluated(ctx, ['p1-ru-001']);
+  const before = (await ctx.call('GET', `/evaluations/${first}`)).body;
+  const target = before.criteria.find((c) => c.type === 'binary' && c.final.answer !== null);
+  const flipped = target.final.answer === 'yes' ? 'no' : 'yes';
+  const appeal = await ctx.call('POST', '/appeals', { evaluation_id: first, criterion_id: target.id, comment: 'Спорно' });
+  await ctx.call('POST', `/appeals/${appeal.body.id}/decision`, { action: 'change', new_value: flipped, reason: 'Толкование проверяющего для прецедента' });
+
+  prompts.length = 0;
+  const [other] = await evaluated(ctx, ['p1-kz-001']);
+  assert.match(prompts[0].system, /Толкование проверяющего для прецедента/);
+  const view = (await ctx.call('GET', `/evaluations/${other}`)).body;
+  assert.deepEqual(view.precedents, [{ appeal_id: appeal.body.id, conversation_id: 'p1-ru-001', criterion_id: target.id }]);
+
+  prompts.length = 0;
+  await evaluated(ctx, ['p1-ru-001']);
+  assert.doesNotMatch(prompts[0].system, /Толкование проверяющего/);
+});
+
+test('прецеденты можно выключить настройкой', async (t) => {
+  const prompts = [];
+  const ctx = await start({
+    settings: { usePrecedents: false },
+    createLlm: async () => {
+      const llm = createMockLlm();
+      const original = llm.evaluate;
+      llm.evaluate = (prompt, schema) => { prompts.push(prompt); return original(prompt, schema); };
+      return llm;
+    },
+  });
+  t.after(ctx.close);
+  await ctx.call('POST', '/conversations/import?group=DEV', sample);
+  const [first] = await evaluated(ctx, ['p1-ru-001']);
+  const target = (await ctx.call('GET', `/evaluations/${first}`)).body.criteria.find((c) => c.type === 'binary' && c.final.answer !== null);
+  const appeal = await ctx.call('POST', '/appeals', { evaluation_id: first, criterion_id: target.id, comment: 'Спорно' });
+  await ctx.call('POST', `/appeals/${appeal.body.id}/decision`, { action: 'change', new_value: target.final.answer === 'yes' ? 'no' : 'yes', reason: 'Не должно попасть в промпт' });
+  prompts.length = 0;
+  await evaluated(ctx, ['p1-kz-001']);
+  assert.doesNotMatch(prompts[0].system, /Не должно попасть в промпт/);
+});

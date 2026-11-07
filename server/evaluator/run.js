@@ -1,6 +1,7 @@
 import { allowedAnswers, flagTypes } from '../checklist.js';
 import { normalizeConversation } from '../normalize.js';
 import { buildPrompt, buildRetryPrompt } from './prompt.js';
+import { collectPrecedents } from '../precedents.js';
 import { buildResponseSchema } from './schema.js';
 import { problemCriteria, quoteMatches, validateResponse } from './validate.js';
 
@@ -64,9 +65,9 @@ export function assembleResult(response, checklist, normalized, errors) {
   };
 }
 
-export async function evaluateConversation({ conversation, checklist, llm, kbDocs, uiLanguage }) {
+export async function evaluateConversation({ conversation, checklist, llm, kbDocs, uiLanguage, precedents = [] }) {
   const normalized = normalizeConversation(conversation, { pauseThresholdSec: checklist.settings?.pause_threshold_sec });
-  const prompt = { ...buildPrompt({ checklist, normalized, kbDocs, uiLanguage }), context: { checklist, normalized } };
+  const prompt = { ...buildPrompt({ checklist, normalized, kbDocs, uiLanguage, precedents }), context: { checklist, normalized } };
   const schema = buildResponseSchema(checklist);
   const validate = (output) => validateResponse(output.json, checklist, normalized);
 
@@ -92,6 +93,8 @@ export async function evaluateConversation({ conversation, checklist, llm, kbDoc
   }
 
   const result = assembleResult(best.json, checklist, normalized, errors);
+  // Какие решения проверяющего были в промпте: видно в карточке.
+  if (precedents.length) result.precedents = precedents.map(({ appeal_id, conversation_id, criterion_id }) => ({ appeal_id, conversation_id, criterion_id }));
   const sum = (key) => responses.reduce((total, r) => total + (r.usage?.[key] ?? 0), 0);
   return {
     model: best.model,
@@ -106,16 +109,18 @@ export async function evaluateConversation({ conversation, checklist, llm, kbDoc
   };
 }
 
-export async function runEvaluation({ db, llm, evaluationId, kbDocs, uiLanguage }) {
+export async function runEvaluation({ db, llm, evaluationId, kbDocs, uiLanguage, usePrecedents = true }) {
   const evaluation = db.evaluations.get(evaluationId);
   db.evaluations.markRunning(evaluationId);
   try {
+    const checklist = db.checklists.get(evaluation.checklist_version_id).config;
     const outcome = await evaluateConversation({
       conversation: db.conversations.get(evaluation.conversation_id),
-      checklist: db.checklists.get(evaluation.checklist_version_id).config,
+      checklist,
       llm,
       kbDocs,
       uiLanguage,
+      precedents: usePrecedents ? collectPrecedents(db, { checklist, conversationId: evaluation.conversation_id }) : [],
     });
     db.evaluations.finish(evaluationId, outcome);
   } catch (error) {

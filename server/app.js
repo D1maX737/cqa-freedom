@@ -29,7 +29,9 @@ export function createApp({ db, settings, createLlm, kbDocs, fetchImpl = fetch }
 
   const queue = createEvaluationQueue({
     concurrency: settings.llmConcurrency,
-    run: ({ evaluationId, llm }) => runEvaluation({ db, llm, evaluationId, kbDocs, uiLanguage: settings.uiLanguage }),
+    run: ({ evaluationId, llm }) => runEvaluation({
+      db, llm, evaluationId, kbDocs, uiLanguage: settings.uiLanguage, usePrecedents: settings.usePrecedents !== false,
+    }),
   });
 
   const view = (evaluation) => buildEvaluationView(evaluation, db.checklists.get(evaluation.checklist_version_id), db.appeals.forEvaluation(evaluation.id));

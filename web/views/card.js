@@ -104,6 +104,14 @@ function appealBlock(c, evaluation, role) {
   </details>`;
 }
 
+/** Решения проверяющего по другим диалогам, которые модель видела в промпте для этого критерия. */
+function precedentNote(c, evaluation, demo) {
+  const used = demo ? [] : (evaluation.precedents ?? []).filter((p) => p.criterion_id === c.id);
+  if (!used.length) return '';
+  return html`<p class="precedent-note">Учтено решение проверяющего по апелляции в
+    ${used.map((p, i) => html`${i ? ', ' : ''}<a href="?view=card&id=${encodeURIComponent(p.conversation_id)}" data-nav>${p.conversation_id}</a>`)}</p>`;
+}
+
 function criterionBlock(c, evaluation, context) {
   const { demo, role, changes } = context;
   const answer = c.final?.answer ?? null;
@@ -120,6 +128,7 @@ function criterionBlock(c, evaluation, context) {
       <span class="answer answer--${tone}">${demo ? 'Пример · ' : ''}${scaleStep ? 'Уровень ' : ''}${outcome}</span>
     </header>
     <p class="crit__nums">${weightLine(c)}</p>
+    ${precedentNote(c, evaluation, demo)}
     ${rule ? html`<details class="crit__rule" ${['bad', 'partial', 'na'].includes(tone) ? 'open' : ''}>
       <summary>${scaleStep ? 'Что означает уровень по шкале' : 'Условие чек-листа'}</summary>
       <p>${rule}</p>

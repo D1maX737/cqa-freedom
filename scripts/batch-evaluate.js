@@ -42,6 +42,7 @@ const summary = await runBatch({
   db, llm, ids, versionId: version.id, concurrency,
   kbDocs: loadKb(path.join(ROOT, 'server', 'kb')),
   uiLanguage: config.uiLanguage,
+  usePrecedents: config.usePrecedents,
   onProgress: (n, total, e) => console.log(`[${n}/${total}] ${e.conversation_id}: ${e.status}${e.needs_review ? ', на проверку' : ''}${e.error ? ` — ${e.error}` : ''}`),
 });
 

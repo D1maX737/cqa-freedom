@@ -21,11 +21,11 @@ export function planBatch(db, { group, versionId, force, limit = null }) {
   return limit ? ids.slice(0, limit) : ids;
 }
 
-export async function runBatch({ db, llm, ids, versionId, concurrency, kbDocs, uiLanguage, onProgress = () => {} }) {
+export async function runBatch({ db, llm, ids, versionId, concurrency, kbDocs, uiLanguage, usePrecedents = true, onProgress = () => {} }) {
   const created = ids.map((id) => db.evaluations.create({ conversation_id: id, checklist_version_id: versionId, provider: llm.name, model: llm.model }));
   let finished = 0;
   await runPool(created, concurrency, async (evaluation) => {
-    await runEvaluation({ db, llm, evaluationId: evaluation.id, kbDocs, uiLanguage });
+    await runEvaluation({ db, llm, evaluationId: evaluation.id, kbDocs, uiLanguage, usePrecedents });
     finished += 1;
     onProgress(finished, created.length, db.evaluations.get(evaluation.id));
   });

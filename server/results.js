@@ -95,6 +95,8 @@ export function buildEvaluationView(evaluation, checklistVersion, appeals) {
     changed: JSON.stringify(originalAnswers) !== JSON.stringify(finalAnswers),
     criteria,
     gross_errors: result.gross_errors,
+    // Решения проверяющего по другим диалогам, которые были в промпте.
+    precedents: result.precedents ?? [],
     appeals,
   };
 }

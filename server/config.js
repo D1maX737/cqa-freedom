@@ -44,6 +44,8 @@ export const config = {
   geminiTimeoutSec: num(process.env.GEMINI_TIMEOUT_SEC, 90),
   llmConcurrency: num(process.env.LLM_CONCURRENCY, 4),
   uiLanguage: process.env.UI_LANGUAGE || 'RU',
+  // Решения проверяющего по апелляциям как прецеденты в промпте; PRECEDENTS=0 выключает.
+  usePrecedents: process.env.PRECEDENTS !== '0',
   // Ручная разметка эталона: по файлу на размечающего, хранится в репозитории.
   labelsDir: process.env.LABELS_DIR || path.join(ROOT, 'eval', 'labels'),
   // Диалоги, на которых настраивали промпт: точность по ним считается отдельно.

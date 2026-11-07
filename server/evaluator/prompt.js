@@ -43,7 +43,20 @@ function renderKb(kbDocs) {
   return kbDocs.map((doc) => `### ${doc.source} (действует с ${doc.effective_date ?? 'даты не указано'})\n${doc.body}`).join('\n\n');
 }
 
-export function buildPrompt({ checklist, normalized, kbDocs, uiLanguage }) {
+/** Решения проверяющего по другим диалогам: толкование правил, а не факты этого диалога. */
+function renderPrecedents(precedents) {
+  if (!precedents.length) return '';
+  const lines = precedents.map((p) => {
+    const fragment = p.fragment.map((m) => `${m.speaker}: «${m.text}»`).join('; ');
+    return `- ${p.criterion_id} ${p.criterion_title}: модель ответила "${p.original}", проверяющий изменил на "${p.decided}". Причина: ${p.reason}`
+      + (fragment ? `\n  Фрагмент того диалога: ${fragment}` : '');
+  });
+  return `\n\n# Решения проверяющего по похожим случаям
+Это решения по апелляциям в других диалогах. Применяй их как толкование правила, только если ситуация в этом диалоге действительно похожа. Факты бери только из этого диалога.
+${lines.join('\n')}`;
+}
+
+export function buildPrompt({ checklist, normalized, kbDocs, uiLanguage, precedents = [] }) {
   const language = LANGUAGE_NAMES[uiLanguage] ?? LANGUAGE_NAMES.RU;
   const system = `Ты аналитик контроля качества брокерской компании. Оцени работу оператора поддержки в одном диалоге по чек-листу. Диалог может быть на русском, казахском или английском; чек-лист один для всех языков.
 
@@ -67,7 +80,7 @@ ${renderChecklist(checklist)}
 ${renderGross(checklist)}
 
 # База знаний
-${renderKb(kbDocs)}`;
+${renderKb(kbDocs)}${renderPrecedents(precedents)}`;
 
   const facts = { ...normalized.facts };
   const transcript = normalized.messages
