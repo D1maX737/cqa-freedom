@@ -21,6 +21,7 @@ export const config = {
   dbPath: process.env.DB_PATH || path.join(ROOT, 'data', 'cqa.db'),
   dataDir: path.join(ROOT, 'data'),
   llmProvider: process.env.LLM_PROVIDER || 'mock',
+  anthropicApiKey: process.env.ANTHROPIC_API_KEY || '',
   anthropicModel: process.env.ANTHROPIC_MODEL || 'claude-opus-5-5',
   anthropicEffort: process.env.ANTHROPIC_EFFORT || 'high',
   llmConcurrency: num(process.env.LLM_CONCURRENCY, 4),
