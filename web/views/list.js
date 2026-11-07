@@ -50,7 +50,7 @@ export async function render(container, state) {
           <input name="group" value="${ls.filters.group || 'DEV'}" size="8" aria-label="group_id набора">
         </label>
         <button class="btn" type="submit">Загрузить из API</button>
-        <label class="btn btn--ghost file">Импорт JSON<input type="file" accept="application/json,.json" data-input="import" hidden></label>
+        <label class="btn btn--ghost file">Импорт JSON<input type="file" accept="application/json,.json" data-input="import"></label>
       </form>
     </section>
 
@@ -70,7 +70,7 @@ export async function render(container, state) {
     ${rows.length === 0 ? html`<div class="empty">
       <p>Диалогов пока нет. Загрузите набор DEV из API организаторов или импортируйте JSON в том же формате.</p>
     </div>` : html`
-    <div class="table-wrap">
+    <div class="table-wrap" role="region" aria-label="Таблица диалогов" tabindex="0">
       <table class="grid">
         <thead><tr>
           <th class="grid__check"><input type="checkbox" data-check="all" ${allChecked ? 'checked' : ''} aria-label="Выбрать все"></th>
@@ -166,5 +166,5 @@ export async function render(container, state) {
     }
   });
 
-  if (rows.some(isPending)) state.schedule(() => render(container, state), 1500);
+  if (rows.some(isPending)) state.schedule(container, () => render(container, state), 1500);
 }

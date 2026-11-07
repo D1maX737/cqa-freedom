@@ -180,19 +180,22 @@ function flash(node, className) {
 }
 
 export async function render(container, state) {
-  const { id } = state.route;
+  const route = state.route;
+  const { id, e: requestedEvaluation } = route;
   let data;
   let evaluation = null;
   let versions;
   try {
     [data, versions] = await Promise.all([api.conversation(id), api.checklists()]);
-    const chosen = state.route.e ?? data.evaluations.find((e) => e.status === 'done')?.id ?? data.evaluations[0]?.id;
+    const chosen = requestedEvaluation ?? data.evaluations.find((item) => item.status === 'done')?.id ?? data.evaluations[0]?.id;
     if (chosen) evaluation = await api.evaluation(chosen);
   } catch (error) {
+    if (route !== state.route) return;
     const root = mountView(container, errorPanel(error));
     root.querySelector('[data-action=retry]').addEventListener('click', () => render(container, state));
     return;
   }
+  if (route !== state.route) return;
 
   const conv = data.conversation;
   const isVoice = conv.channel === 'voice call';
@@ -280,6 +283,6 @@ export async function render(container, state) {
 
   if (location.hash.startsWith('#m')) focusMessage(location.hash.slice(1));
   if (evaluation && (evaluation.status === 'queued' || evaluation.status === 'running')) {
-    state.schedule(() => render(container, state), 1500);
+    state.schedule(container, () => render(container, state), 1500);
   }
 }
