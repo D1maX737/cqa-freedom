@@ -300,6 +300,7 @@ body.cqa-page { margin: 0; }
   border-radius: var(--radius);
 }
 .cqa .filters, .cqa .evaluate, .cqa .loader, .cqa .reeval, .cqa .result__controls { display: flex; min-width: 0; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+.cqa .loader__note { flex-basis: 100%; max-width: 60ch; margin: 0; color: var(--muted); font-size: 13px; line-height: 1.4; }
 .cqa .evaluate__count { font-size: 14px; color: var(--ink-soft); }
 
 .cqa .field { display: grid; min-width: 0; gap: 4px; font-size: 13px; color: var(--ink-soft); }

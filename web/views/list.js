@@ -29,8 +29,9 @@ export async function render(container, state) {
   let rows;
   let versions;
   let groups;
+  let health;
   try {
-    [rows, versions, groups] = await Promise.all([api.conversations(ls.filters), api.checklists(), api.groups()]);
+    [rows, versions, groups, health] = await Promise.all([api.conversations(ls.filters), api.checklists(), api.groups(), api.health()]);
   } catch (error) {
     const root = mountView(container, errorPanel(error));
     root.querySelector('[data-action=retry]').addEventListener('click', () => render(container, state));
@@ -41,16 +42,19 @@ export async function render(container, state) {
   const visible = new Set(rows.map((r) => r.conversation_id));
   for (const id of ls.selected) if (!visible.has(id)) ls.selected.delete(id);
   const allChecked = rows.length > 0 && rows.every((r) => ls.selected.has(r.conversation_id));
+  // Адрес API с подписью хранится только в .env сервера; без него загрузка невозможна, остаётся импорт.
+  const datasetReady = health.dataset_configured;
 
   const root = mountView(container, html`
     <section class="page-head">
       <h1>Диалоги</h1>
       <form class="loader" data-form="fetch">
         <label class="field field--inline">Набор
-          <input name="group" value="${ls.filters.group || 'DEV'}" size="8" aria-label="group_id набора">
+          <input name="group" value="${ls.filters.group || 'DEV'}" size="8" aria-label="group_id набора" title="group_id набора: DEV или код контрольного набора">
         </label>
-        <button class="btn" type="submit">Загрузить из API</button>
+        <button class="btn" type="submit" ${datasetReady ? '' : 'disabled'}>Загрузить из API</button>
         <label class="btn btn--ghost file">Импорт JSON<input type="file" accept="application/json,.json" data-input="import"></label>
+        ${datasetReady ? '' : html`<p class="loader__note" data-note="dataset">API организаторов не подключено: в .env на сервере нет DATASET_URL. Добавьте его и перезапустите сервер или импортируйте JSON.</p>`}
       </form>
     </section>
 
@@ -68,7 +72,7 @@ export async function render(container, state) {
     </section>
 
     ${rows.length === 0 ? html`<div class="empty">
-      <p>Диалогов пока нет. Загрузите набор DEV из API организаторов или импортируйте JSON в том же формате.</p>
+      <p>Диалогов пока нет. ${datasetReady ? 'Загрузите набор DEV из API организаторов или импортируйте JSON в том же формате.' : 'Импортируйте JSON в формате API организаторов или подключите API через DATASET_URL в .env.'}</p>
     </div>` : html`
     <div class="table-wrap" role="region" aria-label="Таблица диалогов" tabindex="0">
       <table class="grid">
