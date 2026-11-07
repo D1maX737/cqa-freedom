@@ -379,6 +379,7 @@ body { margin: 0; }
 .cqa .ed-row, .cqa .ed-na { display: flex; flex-wrap: wrap; align-items: end; gap: 10px; }
 .cqa .ed-grow { flex: 1 1 240px; }
 .cqa .ed-id input { width: 80px; }
+.cqa .ed-code input { width: 140px; }
 .cqa .ed-weight input { width: 80px; }
 .cqa .ed-scale { display: grid; gap: 8px; padding: 10px; background: var(--paper); border-radius: var(--radius); }
 .cqa .ed-step { grid-template-columns: 90px 1fr; align-items: center; }

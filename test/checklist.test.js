@@ -76,3 +76,17 @@ test('допустимые ответы строятся из конфига к�
   assert.deepEqual(allowedAnswers(c.criteria[3]), ['0', '5', '10', '15', '20', 'na']);
   assert.deepEqual(allowedAnswers(c.criteria[5]), ['0', '4', '7', '10']);
 });
+
+test('код для results.json необязателен, но уникален и в нижнем регистре', () => {
+  const checklist = loadSeedChecklist();
+  assert.deepEqual(validateChecklist(checklist), []);
+  const noCode = structuredClone(checklist);
+  delete noCode.criteria[0].code;
+  assert.deepEqual(validateChecklist(noCode), []);
+  const duplicate = structuredClone(checklist);
+  duplicate.criteria[1].code = 'contact';
+  assert.match(validateChecklist(duplicate).join('\n'), /код contact повторяется/);
+  const bad = structuredClone(checklist);
+  bad.criteria[0].code = 'Contact Code';
+  assert.match(validateChecklist(bad).join('\n'), /c1: код/);
+});

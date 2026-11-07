@@ -12,6 +12,7 @@
   "criteria": [
     {
       "id": "c1",
+      "code": "contact",
       "title": "Установление контакта",
       "section": "start",
       "type": "binary",
@@ -23,6 +24,7 @@
     },
     {
       "id": "c2",
+      "code": "discovery",
       "title": "Выявление потребности",
       "section": "start",
       "type": "binary",
@@ -34,6 +36,7 @@
     },
     {
       "id": "c3",
+      "code": "identification",
       "title": "Идентификация",
       "section": "safety",
       "type": "binary",
@@ -45,6 +48,7 @@
     },
     {
       "id": "c4",
+      "code": "consultation",
       "title": "Корректная и полная консультация",
       "section": "safety",
       "type": "scale",
@@ -64,6 +68,7 @@
     },
     {
       "id": "c5",
+      "code": "empathy",
       "title": "Эмпатия и клиентоориентированность",
       "section": "conduct",
       "type": "binary",
@@ -75,6 +80,7 @@
     },
     {
       "id": "c6",
+      "code": "dialogue",
       "title": "Управление диалогом, скорость и грамотность",
       "section": "conduct",
       "type": "scale",
@@ -93,6 +99,7 @@
     },
     {
       "id": "c7",
+      "code": "closure",
       "title": "Завершение",
       "section": "conduct",
       "type": "binary",
@@ -104,6 +111,7 @@
     },
     {
       "id": "c8",
+      "code": "critical",
       "title": "Грубые ошибки",
       "section": "gross",
       "type": "flag",

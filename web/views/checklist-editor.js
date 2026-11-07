@@ -26,6 +26,7 @@ function criterionEditor(c, index, sections, baseCriteria) {
     <legend><span class="crit__id">${c.id}</span> ${c.title || 'Новый критерий'}</legend>
     <div class="ed-row">
       <label class="field ed-id">ID<input data-f="id" value="${c.id}" required></label>
+      <label class="field ed-code" title="Код критерия в results.json организаторов, например contact">Код выгрузки<input data-f="code" value="${c.code ?? ''}" placeholder="contact"></label>
       <label class="field ed-grow">Название<input data-f="title" value="${c.title}" required></label>
       <label class="field">Секция<select data-f="section">
         ${sections.map((s) => html`<option value="${s.id}" ${s.id === c.section ? 'selected' : ''}>${s.title}</option>`)}
@@ -111,7 +112,7 @@ export async function render(container, state) {
         </button>`)}
       </nav>
       <form class="ed-form" data-form="editor" novalidate>
-        <p class="ed-base">Черновик на основе ${base.id}: ${base.name}${dirty ? html` <span class="pill pill--amber">есть несохранённые изменения</span>` : ''}</p>
+        <p class="ed-base">Черновик на основе ${base.id}: ${base.name} <span class="pill pill--amber" data-dirty-pill ${dirty ? '' : 'hidden'}>есть несохранённые изменения</span></p>
 
         <fieldset class="ed-sections">
           <legend>Секции</legend>
@@ -133,7 +134,7 @@ export async function render(container, state) {
           <div class="ed-actions">
             <label class="field field--inline">Название версии<input name="version-name" value="${ed.name}" placeholder="Например: замена c5"></label>
             <button type="submit" class="btn btn--primary" ${dirty ? '' : 'disabled'}>Сохранить как новую версию</button>
-            ${dirty ? html`<button type="button" class="btn btn--ghost" data-action="reset">Отменить изменения</button>` : ''}
+            <button type="button" class="btn btn--ghost" data-action="reset" ${dirty ? '' : 'hidden'}>Отменить изменения</button>
           </div>
           <div class="ed-actions ed-apply">
             <span>Применить ${base.id} к</span>
@@ -149,6 +150,17 @@ export async function render(container, state) {
   const rerender = () => render(container, state);
   const form = root.querySelector('[data-form=editor]');
 
+  // Текстовые поля не перерисовывают форму, поэтому состояние «есть изменения» обновляется на месте.
+  const syncDirty = () => {
+    const isDirty = JSON.stringify(draft) !== JSON.stringify(base.config);
+    root.querySelector('button[type=submit]').disabled = !isDirty;
+    root.querySelector('[data-dirty-pill]').hidden = !isDirty;
+    root.querySelector('[data-action=reset]').hidden = !isDirty;
+    const apply = root.querySelector('[data-action=apply]');
+    apply.disabled = isDirty;
+    apply.title = isDirty ? 'Сначала сохраните версию' : '';
+  };
+
   form.addEventListener('input', (event) => {
     const input = event.target;
     if (ed.errors.length) {
@@ -156,13 +168,14 @@ export async function render(container, state) {
       root.querySelector('.ed-errors')?.remove();
     }
     if (input.name === 'version-name') { ed.name = input.value; return; }
-    if (input.dataset.section !== undefined) { draft.sections[Number(input.dataset.section)].title = input.value; return; }
+    if (input.dataset.section !== undefined) { draft.sections[Number(input.dataset.section)].title = input.value; syncDirty(); return; }
     const fieldset = input.closest('[data-index]');
     if (!fieldset || !input.dataset.f) return;
     const c = draft.criteria[Number(fieldset.dataset.index)];
     if (input.dataset.f === 'scale') return;
     applyField(c, input.dataset.f, input);
     if (input.dataset.f === 'title') fieldset.querySelector('legend').lastChild.textContent = ` ${input.value || 'Новый критерий'}`;
+    syncDirty();
   });
 
   // Поля, меняющие состав формы, перерисовывают её после изменения.

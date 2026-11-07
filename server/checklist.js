@@ -23,11 +23,18 @@ export function validateChecklist(checklist) {
 
   const sectionIds = new Set(sections.map((s) => s.id));
   const seen = new Set();
+  const codes = new Set();
   for (const c of criteria) {
     const label = c.id || c.title || 'критерий без id';
     if (!c.id) errors.push('У критерия нет id');
     if (seen.has(c.id)) errors.push(`id ${c.id} повторяется`);
     seen.add(c.id);
+    // Код критерия в results.json организаторов. Необязателен: без него версию нельзя выгрузить.
+    if (c.code) {
+      if (!/^[a-z][a-z0-9_]*$/.test(c.code)) errors.push(`${label}: код «${c.code}» — только латиница в нижнем регистре, цифры и _`);
+      if (codes.has(c.code)) errors.push(`код ${c.code} повторяется`);
+      codes.add(c.code);
+    }
     if (!c.title?.trim()) errors.push(`${label}: нет названия`);
     if (!c.definition?.trim()) errors.push(`${label}: нет определения`);
     if (!sectionIds.has(c.section)) errors.push(`${label}: секция «${c.section}» не найдена`);

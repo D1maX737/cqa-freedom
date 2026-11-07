@@ -11,6 +11,7 @@
     "start": "node server/index.js",
     "fetch": "node scripts/fetch-dataset.js",
     "batch": "node scripts/batch-evaluate.js",
+    "export": "node scripts/export-results.js",
     "prepare": "git config core.hooksPath .githooks || true"
   },
   "type": "module",
