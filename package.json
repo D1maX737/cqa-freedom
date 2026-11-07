@@ -1,0 +1,26 @@
+{
+  "name": "cqa-hackathon",
+  "version": "0.1.0",
+  "description": "Conversation Quality Analytics prototype for the Freedom Broker hackathon",
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "start": "node server/index.js",
+    "fetch": "node scripts/fetch-dataset.js",
+    "batch": "node scripts/batch-evaluate.js",
+    "prepare": "git config core.hooksPath .githooks || true"
+  },
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.6.0",
+    "better-sqlite3": "^13.0.3",
+    "express": "^5.3.0"
+  }
+}
