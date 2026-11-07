@@ -61,6 +61,18 @@ CREATE TABLE IF NOT EXISTS appeals (
   decided_at    TEXT
 );
 CREATE UNIQUE INDEX IF NOT EXISTS appeals_one_open ON appeals(evaluation_id, criterion_id) WHERE status = 'open';
+
+CREATE TABLE IF NOT EXISTS coaching (
+  id            TEXT PRIMARY KEY,
+  evaluation_id TEXT NOT NULL REFERENCES evaluations(id),
+  criterion_id  TEXT NOT NULL,
+  msg_id        TEXT,
+  suggestion    TEXT NOT NULL,
+  why           TEXT NOT NULL,
+  model         TEXT,
+  created_at    TEXT NOT NULL,
+  UNIQUE (evaluation_id, criterion_id)
+);
 `;
 
 const now = () => new Date().toISOString();
@@ -214,5 +226,17 @@ export function openDb(file) {
       .run(action, new_value ?? null, reason, now(), id).changes,
   };
 
-  return { raw, conversations, checklists, evaluations, appeals, close: () => raw.close() };
+  // «Как надо было ответить»: одна подсказка на критерий оценки.
+  const coaching = {
+    get: (evaluationId, criterionId) => raw.prepare('SELECT * FROM coaching WHERE evaluation_id = ? AND criterion_id = ?').get(evaluationId, criterionId),
+    forEvaluation: (evaluationId) => raw.prepare('SELECT * FROM coaching WHERE evaluation_id = ? ORDER BY created_at, rowid').all(evaluationId),
+    save: ({ evaluation_id, criterion_id, msg_id, suggestion, why, model }) => {
+      const id = randomUUID();
+      raw.prepare(`INSERT INTO coaching (id, evaluation_id, criterion_id, msg_id, suggestion, why, model, created_at)
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?)`).run(id, evaluation_id, criterion_id, msg_id ?? null, suggestion, why, model ?? null, now());
+      return raw.prepare('SELECT * FROM coaching WHERE id = ?').get(id);
+    },
+  };
+
+  return { raw, conversations, checklists, evaluations, appeals, coaching, close: () => raw.close() };
 }

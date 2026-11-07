@@ -564,6 +564,12 @@ body.cqa-page { margin: 0; }
 .cqa .crit__nums { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 13px; color: var(--ink-soft); }
 .cqa .crit__why { font-size: 14px; }
 .cqa .crit__why strong { display: block; font-size: 13px; color: var(--ink-soft); }
+.cqa .coach__body { display: grid; gap: 4px; padding: 10px 12px; border-radius: var(--radius); background: var(--mint); }
+.cqa .coach__reply { margin: 0; font-size: 15px; }
+.cqa .coach__reply::before { content: '«'; }
+.cqa .coach__reply::after { content: '»'; }
+.cqa .coach__why { font-size: 14px; color: var(--ink-soft); }
+.cqa .coach__note { font-size: 12px; color: var(--muted); }
 .cqa .precedent-note { font-size: 13px; color: var(--ink-soft); }
 .cqa .crit__rule, .cqa .crit__history { font-size: 14px; color: var(--ink-soft); }
 .cqa .crit__rule summary, .cqa .crit__history summary { cursor: pointer; color: var(--spruce); font-size: 13px; font-weight: 600; }

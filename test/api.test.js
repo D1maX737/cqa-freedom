@@ -359,3 +359,45 @@ test('сводка по набору: оценки заглушкой не в с
   assert.equal(overview.checklist_version_id, 'v1');
   assert.deepEqual(overview.by_language.map((l) => l.language).sort(), ['KZ', 'RU']);
 });
+
+async function lossAndFull(ctx) {
+  const ids = await evaluated(ctx, ['p1-ru-001', 'p1-kz-001', 'p1-en-001']);
+  const views = await Promise.all(ids.map(async (id) => (await ctx.call('GET', `/evaluations/${id}`)).body));
+  const scored = (c) => c.type !== 'flag' && c.final.effective_weight !== null;
+  const loss = views.flatMap((v) => v.criteria.filter((c) => scored(c) && c.final.effective_score < c.final.effective_weight).map((c) => [v.id, c.id]))[0];
+  const full = views.flatMap((v) => v.criteria.filter((c) => scored(c) && c.final.effective_score === c.final.effective_weight).map((c) => [v.id, c.id]))[0];
+  return { loss, full };
+}
+
+test('«Как надо было ответить»: подсказка по невыполненному критерию сохраняется и не запрашивается повторно', async (t) => {
+  let calls = 0;
+  const ctx = await start({ createLlm: async () => { const llm = createMockLlm(); const original = llm.evaluate; llm.evaluate = (...a) => { calls += 1; return original(...a); }; return llm; } });
+  t.after(ctx.close);
+  await ctx.call('POST', '/conversations/import?group=DEV', sample);
+  const { loss } = await lossAndFull(ctx);
+  assert.ok(loss, 'в выборке есть невыполненный критерий');
+  const [evaluationId, criterionId] = loss;
+  const before = calls;
+  const first = await ctx.call('POST', `/evaluations/${evaluationId}/coaching`, { criterion_id: criterionId });
+  assert.equal(first.status, 201, JSON.stringify(first.body));
+  assert.ok(first.body.suggestion.length > 0);
+  assert.equal(first.body.criterion_id, criterionId);
+  const again = await ctx.call('POST', `/evaluations/${evaluationId}/coaching`, { criterion_id: criterionId });
+  assert.equal(again.status, 200);
+  assert.equal(again.body.id, first.body.id);
+  assert.equal(calls, before + 1);
+  const view = (await ctx.call('GET', `/evaluations/${evaluationId}`)).body;
+  assert.deepEqual(view.coaching.map((c) => c.criterion_id), [criterionId]);
+});
+
+test('«Как надо было ответить»: не нужна для выполненного критерия и грубой ошибки, неизвестная оценка — 404', async (t) => {
+  const ctx = await start();
+  t.after(ctx.close);
+  await ctx.call('POST', '/conversations/import?group=DEV', sample);
+  const { full } = await lossAndFull(ctx);
+  const done = await ctx.call('POST', `/evaluations/${full[0]}/coaching`, { criterion_id: full[1] });
+  assert.equal(done.status, 400);
+  assert.match(done.body.error, /выполнен/);
+  assert.equal((await ctx.call('POST', `/evaluations/${full[0]}/coaching`, { criterion_id: 'c8' })).status, 400);
+  assert.equal((await ctx.call('POST', '/evaluations/nope/coaching', { criterion_id: 'c1' })).status, 404);
+});

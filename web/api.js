@@ -41,4 +41,5 @@ export const api = {
   saveLabel: (conversationId, label) => request('PUT', `/labels/${encodeURIComponent(conversationId)}`, label),
   accuracy: (params) => request('GET', `/accuracy${query(params)}`),
   overview: (params) => request('GET', `/overview${query(params)}`),
+  coach: (evaluationId, criterionId) => request('POST', `/evaluations/${encodeURIComponent(evaluationId)}/coaching`, { criterion_id: criterionId }),
 };

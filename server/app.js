@@ -9,6 +9,7 @@ import { runEvaluation } from './evaluator/run.js';
 import { normalizeConversation } from './normalize.js';
 import { collectAccuracy } from './accuracy.js';
 import { collectOverview } from './overview.js';
+import { coachCriterion } from './coaching.js';
 import { readLabels, saveLabel, validateLabel } from './labels.js';
 import { buildEvaluationView, decisionValues, fragmentFor } from './results.js';
 
@@ -35,7 +36,10 @@ export function createApp({ db, settings, createLlm, kbDocs, fetchImpl = fetch }
     }),
   });
 
-  const view = (evaluation) => buildEvaluationView(evaluation, db.checklists.get(evaluation.checklist_version_id), db.appeals.forEvaluation(evaluation.id));
+  const view = (evaluation) => ({
+    ...buildEvaluationView(evaluation, db.checklists.get(evaluation.checklist_version_id), db.appeals.forEvaluation(evaluation.id)),
+    coaching: db.coaching.forEvaluation(evaluation.id),
+  });
   const getEvaluation = (id) => {
     const evaluation = db.evaluations.get(id);
     if (!evaluation) throw new HttpError(404, 'Оценка не найдена');
@@ -182,6 +186,43 @@ export function createApp({ db, settings, createLlm, kbDocs, fetchImpl = fetch }
   });
 
   api.get('/evaluations/:id', (req, res) => res.json(view(getEvaluation(req.params.id))));
+
+  // «Как надо было ответить»: один запрос к модели по кнопке, ответ сохраняется.
+  api.post('/evaluations/:id/coaching', async (req, res) => {
+    const evaluation = getEvaluation(req.params.id);
+    if (evaluation.status !== 'done' || !evaluation.result) throw new HttpError(400, 'Оценка ещё не готова');
+    const current = view(evaluation);
+    const row = current.criteria.find((c) => c.id === req.body?.criterion_id);
+    if (!row) throw new HttpError(400, 'Неизвестный критерий');
+    if (row.type === 'flag') throw new HttpError(400, 'Для грубой ошибки подсказка не составляется: здесь нужен разбор проверяющего');
+    const { effective_weight: weight, effective_score: score } = row.final;
+    if (weight === null || score >= weight) throw new HttpError(400, 'Критерий выполнен или не применяется: подсказка не нужна');
+    const existing = db.coaching.get(evaluation.id, row.id);
+    if (existing) return res.json(existing);
+
+    let llm;
+    try {
+      llm = await createLlm(settings);
+    } catch (error) {
+      throw new HttpError(400, error.message);
+    }
+    const version = db.checklists.get(evaluation.checklist_version_id);
+    const conversation = db.conversations.get(evaluation.conversation_id);
+    let coach;
+    try {
+      coach = await coachCriterion({
+        llm,
+        criterion: version.config.criteria.find((c) => c.id === row.id),
+        item: evaluation.result.criteria.find((c) => c.id === row.id),
+        normalized: normalizeConversation(conversation, { pauseThresholdSec: version.config.settings?.pause_threshold_sec }),
+        kbDocs,
+        clientLanguage: evaluation.result.client_language,
+      });
+    } catch (error) {
+      throw new HttpError(502, error.message);
+    }
+    res.status(201).json(db.coaching.save({ evaluation_id: evaluation.id, criterion_id: row.id, ...coach }));
+  });
 
   api.post('/appeals', (req, res) => {
     const evaluation = getEvaluation(req.body?.evaluation_id);

@@ -91,6 +91,14 @@ export function createMockLlm({ fault } = {}) {
     calls,
     async evaluate(prompt) {
       calls.push(prompt);
+      if (prompt.context?.task === 'coach') {
+        const json = {
+          msg_id: prompt.context.target ?? '',
+          suggestion: `[mock] Пример реплики оператора по критерию ${prompt.context.criterion.id}: подведу итог и уточню, чем ещё помочь.`,
+          why: '[mock] Заглушка: это не совет модели, а пример для проверки интерфейса.',
+        };
+        return { json, raw: JSON.stringify(json), model: MODEL, usage: { input_tokens: estimateTokens(prompt.system + prompt.user), output_tokens: 40 }, cost_usd: 0 };
+      }
       const response = buildResponse(prompt.context);
       const json = fault ? FAULTS[fault](response, prompt.context, calls.length) : response;
       return {

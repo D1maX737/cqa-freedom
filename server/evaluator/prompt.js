@@ -1,6 +1,6 @@
 import { allowedAnswers, flagTypes } from '../checklist.js';
 
-const LANGUAGE_NAMES = { RU: 'русском', KZ: 'казахском', EN: 'английском' };
+export const LANGUAGE_NAMES = { RU: 'русском', KZ: 'казахском', EN: 'английском' };
 
 function renderCriterion(c) {
   const lines = [`### ${c.id} — ${c.title} (вес ${c.weight})`, `Определение: ${c.definition}`];
@@ -36,7 +36,7 @@ function renderGross(checklist) {
   ].join('\n');
 }
 
-function renderKb(kbDocs) {
+export function renderKb(kbDocs) {
   if (kbDocs.length === 0) {
     return 'База знаний пуста. Не утверждай, что ответ оператора противоречит правилам компании, и не выдумывай правила. Оценивай по самому диалогу.';
   }

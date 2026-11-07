@@ -112,6 +112,25 @@ function precedentNote(c, evaluation, demo) {
     ${used.map((p, i) => html`${i ? ', ' : ''}<a href="?view=card&id=${encodeURIComponent(p.conversation_id)}" data-nav>${p.conversation_id}</a>`)}</p>`;
 }
 
+function coachView(x) {
+  return html`<div class="coach__body">
+    <span class="links__label">Как можно было ответить${x.msg_id ? ` на месте ${x.msg_id}` : ''}</span>
+    <blockquote class="coach__reply">${x.suggestion}</blockquote>
+    ${x.why ? html`<p class="coach__why">${x.why}</p>` : ''}
+    <p class="coach__note">Подсказка ИИ по фактам диалога и базе знаний. Проверьте перед использованием.</p>
+  </div>`;
+}
+
+/** «Как надо было ответить» — только у критериев, где потеряны баллы. */
+function coachBlock(c, evaluation) {
+  if (c.type === 'flag' || !c.final) return '';
+  const { effective_weight: weight, effective_score: score } = c.final;
+  if (weight === null || score >= weight) return '';
+  const saved = (evaluation.coaching ?? []).find((x) => x.criterion_id === c.id);
+  return html`<div class="coach" data-coach="${c.id}">${saved ? coachView(saved)
+    : html`<button type="button" class="btn btn--small" data-coach-btn="${c.id}">Как надо было ответить</button>`}</div>`;
+}
+
 function criterionBlock(c, evaluation, context) {
   const { demo, role, changes } = context;
   const answer = c.final?.answer ?? null;
@@ -137,6 +156,7 @@ function criterionBlock(c, evaluation, context) {
         <summary>Первоначальное обоснование</summary>
         ${originalExplanation(c, context)}
       </details>` : originalExplanation(c, context)}
+    ${coachBlock(c, evaluation)}
     ${appealBlock(c, evaluation, role)}
   </section>`;
 }
@@ -331,7 +351,26 @@ export async function render(container, state) {
     }
   };
 
+  async function requestCoach(button) {
+    button.disabled = true;
+    button.textContent = 'Готовлю подсказку…';
+    try {
+      const coach = await api.coach(evaluation.id, button.dataset.coachBtn);
+      button.closest('[data-coach]').innerHTML = String(coachView(coach));
+    } catch (error) {
+      toast(error.message, 'error');
+      button.disabled = false;
+      button.textContent = 'Как надо было ответить';
+    }
+  }
+
   root.addEventListener('click', (event) => {
+    const coachButton = event.target.closest('[data-coach-btn]');
+    if (coachButton) {
+      event.preventDefault();
+      requestCoach(coachButton);
+      return;
+    }
     // Полоска критериев: открывает критерий и реплику, на которую он опирается.
     const pathLink = event.target.closest('[data-path]');
     if (pathLink) {
