@@ -141,6 +141,30 @@ function criterionBlock(c, evaluation, context) {
   </section>`;
 }
 
+/** Все критерии одной строкой над перепиской: статус и реплика, на которую он опирается. */
+function critPath(evaluation, demo) {
+  if (demo) return '';
+  const label = (c, answer) => {
+    if (answer === null || answer === undefined) return 'нет ответа';
+    if (c.type === 'flag') return answer === 'yes' ? 'есть' : 'нет';
+    if (answer === 'na') return 'N/A';
+    if (c.type === 'scale') return `${answer} из ${Math.max(...c.scale)}`;
+    return answer === 'yes' ? 'да' : 'нет';
+  };
+  return html`<nav class="crit-path" aria-label="Критерии чек-листа">
+    ${evaluation.criteria.map((c) => {
+      const answer = c.final?.answer ?? null;
+      const tone = answerTone(answer, c);
+      const missed = tone === 'bad' || tone === 'partial';
+      const msg = missed ? c.expected_at[0] ?? c.evidence[0]?.msg_id : c.evidence[0]?.msg_id;
+      const kind = missed && c.expected_at[0] && c.type !== 'flag' ? 'expected' : 'evidence';
+      return html`<a class="crit-path__item crit-path__item--${tone}" href="#crit-${c.id}" data-path="${c.id}"
+        ${msg ? html`data-path-msg="${msg}" data-path-kind="${kind}"` : ''} title="${c.id} ${c.title}: ${answerText(answer, c)}${msg ? `, реплика ${msg}` : ''}">
+        <span class="crit-path__id">${c.id}</span>${label(c, answer)}${missed && msg ? html`<span class="crit-path__msg">${msg}</span>` : ''}</a>`;
+    })}
+  </nav>`;
+}
+
 function scoreHead(evaluation) {
   const { scores } = evaluation.final;
   const demo = evaluation.provider === 'mock';
@@ -274,6 +298,7 @@ export async function render(container, state) {
         <span class="chip">Реплик ${conv.messages.length}</span><span class="chip">Набор ${conv.group_id}</span></p>
     </section>
     ${hasScore ? scoreHead(evaluation) : demo ? demoNote : ''}
+    ${hasScore ? critPath(evaluation, demo) : ''}
     <div class="card">
       <section class="transcript" aria-labelledby="transcript-title">
         <header class="transcript__head">
@@ -307,6 +332,15 @@ export async function render(container, state) {
   };
 
   root.addEventListener('click', (event) => {
+    // Полоска критериев: открывает критерий и реплику, на которую он опирается.
+    const pathLink = event.target.closest('[data-path]');
+    if (pathLink) {
+      event.preventDefault();
+      if (pathLink.dataset.pathMsg) focusMessage(pathLink.dataset.pathMsg, pathLink.dataset.pathKind);
+      const node = root.querySelector(`#crit-${CSS.escape(pathLink.dataset.path)}`);
+      if (node) flash(node, 'is-target');
+      return;
+    }
     const msgLink = event.target.closest('[data-msg]');
     if (msgLink) {
       event.preventDefault();

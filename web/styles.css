@@ -530,6 +530,19 @@ body.cqa-page { margin: 0; }
 .cqa .gross-flag { padding: 8px 12px; border-radius: var(--radius); background: var(--brick-bg); color: var(--brick); font-weight: 500; }
 .cqa .review-note { padding: 6px 10px; border-radius: var(--radius); background: var(--amber-bg); color: var(--amber); font-size: 13px; }
 
+/* Полоска критериев над перепиской */
+.cqa .crit-path { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+.cqa .crit-path__item { display: inline-flex; align-items: baseline; gap: 6px; padding: 4px 11px; border: 1px solid var(--line-strong);
+  border-radius: 99px; background: var(--surface); color: var(--ink); font-size: 13px; font-weight: 600; text-decoration: none; }
+.cqa .crit-path__item:hover { border-color: var(--spruce); }
+.cqa .crit-path__item--good { border-color: #b9e2c6; background: var(--mint); color: var(--spruce-strong); }
+.cqa .crit-path__item--bad { border-color: #e6b3ab; background: var(--brick-bg); color: var(--brick); }
+.cqa .crit-path__item--partial { border-color: #ebc98f; background: var(--amber-bg); color: var(--amber); }
+.cqa .crit-path__item--na, .cqa .crit-path__item--none { color: var(--ink-soft); }
+.cqa .crit-path__id { font-size: 12px; font-weight: 500; opacity: 0.75; }
+.cqa .crit-path__msg { font-size: 12px; font-weight: 500; }
+.cqa .crit-path__msg::before { content: '· '; }
+
 /* Критерии */
 .cqa .crit-group { display: grid; gap: 10px; }
 .cqa .crit-group h3 { font-size: 15px; font-weight: 650; color: var(--ink-soft); padding: 4px 0; scroll-margin-top: var(--sticky-offset); }
