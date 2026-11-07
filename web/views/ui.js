@@ -38,8 +38,8 @@ export function clock(sec) {
 }
 
 export function answerText(answer, criterion) {
-  if (answer === null || answer === undefined) return 'нет ответа';
-  if (answer === 'na') return 'N/A';
+  if (answer === null || answer === undefined) return 'Не оценено';
+  if (answer === 'na') return 'Не применяется';
   if (criterion.type === 'scale') return `${answer} из ${Math.max(...criterion.scale)}`;
   if (criterion.type === 'flag') return answer === 'yes' ? 'Есть' : 'Нет';
   return answer === 'yes' ? 'Да' : 'Нет';

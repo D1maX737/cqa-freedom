@@ -387,6 +387,9 @@ body.cqa-page { margin: 0; }
 }
 .cqa .transcript { padding: 0 0 12px; }
 .cqa .result { padding: 16px 18px 24px; display: grid; gap: 16px; align-content: start; }
+.cqa .transcript__head { padding: 16px 18px 12px; border-bottom: 1px solid var(--line); }
+.cqa .transcript h2, .cqa .result h2 { font-size: 18px; font-weight: 700; }
+.cqa .transcript__head p { margin-top: 3px; font-size: 13px; color: var(--ink-soft); }
 
 .cqa .player { position: sticky; top: 0; z-index: 1; padding: 12px 14px; background: var(--surface); border-bottom: 1px solid var(--line); }
 .cqa .player audio { width: 100%; }
@@ -424,31 +427,84 @@ body.cqa-page { margin: 0; }
 .cqa .msg.is-expected .msg__body { background: var(--brick-bg); box-shadow: inset 0 0 0 2px var(--brick); }
 
 /* Итог */
-.cqa .score { display: grid; gap: 12px; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
-.cqa .score__totals { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px 28px; }
-.cqa .score__final { display: grid; }
-.cqa .score__label { font-size: 13px; color: var(--muted); }
-.cqa .score__value { font-size: 52px; line-height: 1; font-weight: 600; letter-spacing: -0.02em; color: var(--spruce-strong); }
-.cqa .score__orig { display: grid; font-size: 18px; color: var(--ink-soft); }
-.cqa .sections { display: grid; gap: 6px; margin: 0; }
-.cqa .sections__row { display: grid; grid-template-columns: minmax(0, 1fr) 180px; gap: 12px; align-items: center; font-size: 14px; }
-.cqa .sections__row dd { margin: 0; display: grid; grid-template-columns: 1fr 52px; align-items: center; gap: 8px; }
-.cqa .bar { height: 6px; border-radius: 3px; background: linear-gradient(90deg, var(--primary) var(--fill), var(--line) var(--fill)); }
-.cqa .sections__num { text-align: right; font-weight: 500; }
+.cqa .score {
+  --ring-color: var(--spruce);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: 14px 22px;
+  align-items: start;
+  margin-bottom: 20px;
+  padding: clamp(14px, 2vw, 24px);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.cqa .score__summary, .cqa .score__breakdown { display: grid; gap: 8px; }
+.cqa .score h2, .cqa .score h3 { font-size: 15px; font-weight: 700; }
+.cqa .score__hint { font-size: 12px; }
+.cqa .score__amount { color: var(--ink-soft); }
+.cqa .score__value { font-size: clamp(38px, 5vw, 56px); line-height: 1.05; font-weight: 750; letter-spacing: -0.04em; color: var(--spruce-strong); }
+.cqa .score__missing { font-weight: 600; color: var(--ink-soft); }
+.cqa .score__source { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 0; font-size: 13px; }
+.cqa .score__source div { display: flex; flex-wrap: wrap; gap: 0 6px; min-width: 0; }
+.cqa .score__source dt { color: var(--muted); }
+.cqa .score__source dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
+.cqa .sections { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(120px, 100%), 1fr)); gap: 8px; }
+.cqa .section-score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 6px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  text-align: center;
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+.cqa .section-score:hover { border-color: var(--ring-color); }
+.cqa .section-score__ring {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-content: center;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: conic-gradient(var(--ring-color) var(--fill), var(--line) 0);
+}
+.cqa .section-score__ring::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 5px;
+  border-radius: inherit;
+  background: var(--surface);
+}
+.cqa .section-score__ring strong { font-size: 17px; }
+.cqa .section-score__ring small { font-size: 11px; font-weight: 400; color: var(--muted); }
+.cqa .demo-note, .cqa .gross-flag, .cqa .score > .review-note { grid-column: 1 / -1; }
+.cqa .demo-note { padding: 8px 12px; border-radius: var(--radius); background: var(--amber-bg); color: var(--amber); font-size: 13px; }
+.cqa .cqa-view > .demo-note { margin-bottom: 16px; }
 .cqa .gross-flag { padding: 8px 12px; border-radius: var(--radius); background: var(--brick-bg); color: var(--brick); font-weight: 500; }
 .cqa .review-note { padding: 6px 10px; border-radius: var(--radius); background: var(--amber-bg); color: var(--amber); font-size: 13px; }
-.cqa .meta-line { font-size: 13px; color: var(--ink-soft); }
 
 /* Критерии */
 .cqa .crit-group { display: grid; gap: 10px; }
-.cqa .crit-group h3 { font-size: 15px; font-weight: 600; color: var(--ink-soft); padding-top: 4px; }
+.cqa .crit-group h3 { font-size: 15px; font-weight: 650; color: var(--ink-soft); padding: 4px 0; scroll-margin-top: var(--sticky-offset); }
+.cqa .crit-group h3.is-target { color: var(--spruce); background: var(--mint); }
 .cqa .crit { display: grid; gap: 8px; padding: 12px 14px; border: 1px solid var(--line); border-left-width: 4px; border-radius: var(--radius); scroll-margin: 20px; }
 .cqa .crit--good { border-left-color: var(--spruce); }
 .cqa .crit--bad { border-left-color: var(--brick); }
 .cqa .crit--partial { border-left-color: #d08a1c; }
 .cqa .crit--na, .cqa .crit--none { border-left-color: var(--line-strong); }
 .cqa .crit.is-target { box-shadow: 0 0 0 2px var(--spruce); }
-.cqa .crit__head { display: flex; align-items: baseline; gap: 10px; }
+.cqa .crit__head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
 .cqa .crit__id { font-size: 12px; font-weight: 600; color: var(--muted); }
 .cqa .crit__title { font-size: 15px; font-weight: 600; flex: 1; }
 .cqa .answer { font-size: 13px; font-weight: 600; padding: 1px 10px; border-radius: 99px; white-space: nowrap; }
@@ -458,6 +514,10 @@ body.cqa-page { margin: 0; }
 .cqa .answer--na, .cqa .answer--none { background: var(--client); color: var(--ink-soft); }
 .cqa .crit__nums { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 13px; color: var(--ink-soft); }
 .cqa .crit__why { font-size: 14px; }
+.cqa .crit__why strong { display: block; font-size: 13px; color: var(--ink-soft); }
+.cqa .crit__rule, .cqa .crit__history { font-size: 14px; color: var(--ink-soft); }
+.cqa .crit__rule summary, .cqa .crit__history summary { cursor: pointer; color: var(--spruce); font-size: 13px; font-weight: 600; }
+.cqa .crit__rule p, .cqa .crit__history > :not(summary) { margin-top: 4px; }
 .cqa .links { display: grid; gap: 4px; font-size: 14px; }
 .cqa .links__label { display: block; font-size: 12px; color: var(--muted); }
 .cqa .quote, .cqa .where {
@@ -471,9 +531,9 @@ body.cqa-page { margin: 0; }
 }
 .cqa .quote:hover, .cqa .where:hover { border-color: var(--spruce); }
 .cqa .quote q { quotes: '«' '»'; }
-.cqa .quote__ref { display: block; font-size: 12px; color: var(--spruce); }
+.cqa .quote__ref { display: block; font-size: 13px; color: var(--spruce); text-decoration: underline; text-underline-offset: 2px; }
 .cqa .quote--unverified { border-style: dashed; border-color: #d08a1c; }
-.cqa .where { color: var(--brick); background: var(--brick-bg); font-size: 13px; }
+.cqa .where { font-size: 13px; }
 .cqa .na-reason { font-size: 14px; padding: 6px 10px; border-radius: var(--radius); background: var(--client); }
 
 /* Апелляции */
@@ -532,6 +592,7 @@ body.cqa-page { margin: 0; }
   .cqa .hero h1 { font-size: clamp(34px, 7vw, 52px); }
   .cqa .hero-demo { width: min(100%, 440px); }
   .cqa .features__grid { grid-template-columns: 1fr; }
+  .cqa .score { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 640px) {
   .cqa .topbar__end { width: 100%; order: 2; }
@@ -542,9 +603,9 @@ body.cqa-page { margin: 0; }
   .cqa .hero__tag { font-size: 10px; }
   .cqa .hero-demo { padding: 14px; border-radius: 14px; }
   .cqa .msg { grid-template-columns: 34px minmax(0, 1fr); }
-  .cqa .sections__row { grid-template-columns: 1fr; gap: 2px; }
+  .cqa .sections { grid-template-columns: repeat(auto-fit, minmax(min(90px, 100%), 1fr)); }
+  .cqa .section-score { padding: 8px 4px; font-size: 12px; hyphens: auto; }
   .cqa .triple { grid-template-columns: 1fr; }
-  .cqa .score__value { font-size: 42px; }
 }
 
 /* Очередь апелляций */

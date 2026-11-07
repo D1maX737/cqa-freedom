@@ -32,7 +32,7 @@ function appealItem(item, role) {
         <h3 class="appeal-item__crit"><span class="crit__id">${c.id}</span> ${c.title}
           <span class="answer answer--${answerTone(original, c)}">${answerText(original, c)}</span></h3>
         <p class="crit__why">${c.explanation ?? ''}</p>
-        ${c.original?.answer === 'na' && c.na_reason ? html`<p class="na-reason"><span class="links__label">Почему N/A</span>${c.na_reason}</p>` : ''}
+        ${c.original?.answer === 'na' && c.na_reason ? html`<p class="na-reason"><span class="links__label">Почему критерий не применяется</span>${c.na_reason}</p>` : ''}
         <p class="appeal__comment appeal__comment--box"><span class="links__label">Комментарий пользователя</span>${item.comment}</p>
         ${item.status === 'decided' ? decisionTriple(c, item) : role === 'reviewer' ? decisionForm(c, item)
           : html`<p class="muted">Решение принимает проверяющий: переключите роль в шапке.</p>`}

@@ -137,9 +137,9 @@ export function mount(container) {
     state.health = health;
     const badge = container.querySelector('[data-llm]');
     const isMock = health.provider === 'mock';
-    badge.textContent = isMock ? 'Оценки: заглушка без LLM' : `Модель: ${health.model}`;
+    badge.textContent = isMock ? 'Новые оценки в тестовом режиме' : `Модель для новых оценок · ${health.model}`;
     badge.classList.toggle('llm--mock', isMock);
-    badge.title = isMock ? 'LLM_PROVIDER=mock: ответы детерминированные, для проверки интерфейса' : '';
+    badge.title = isMock ? 'Заглушка подставляет примеры баллов и ссылок без обращения к ИИ.' : '';
   }).catch(() => {});
 
   render();
