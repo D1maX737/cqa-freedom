@@ -32,9 +32,11 @@ export const config = {
   anthropicEffort: process.env.ANTHROPIC_EFFORT || 'high',
   geminiApiKey: process.env.GEMINI_API_KEY || '',
   geminiModel: process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite',
-  geminiThinking: process.env.GEMINI_THINKING || '',
+  geminiThinking: process.env.GEMINI_THINKING ?? 'high',
   // Запросов в минуту на бесплатном тарифе; 0 — без ограничения.
   geminiRpm: count(process.env.GEMINI_RPM, 14),
+  // Сколько ждать ответа: зависший запрос обрывается и повторяется.
+  geminiTimeoutSec: num(process.env.GEMINI_TIMEOUT_SEC, 90),
   llmConcurrency: num(process.env.LLM_CONCURRENCY, 4),
   uiLanguage: process.env.UI_LANGUAGE || 'RU',
 };

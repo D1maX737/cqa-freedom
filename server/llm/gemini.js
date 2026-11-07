@@ -4,7 +4,6 @@ const BASE_URL = 'https://generativelanguage.googleapis.com/v1beta';
 const RETRYABLE = new Set([429, 500, 502, 503, 504]);
 // Дольше ждать нет смысла: это уже дневной лимит, а не минутный.
 const MAX_WAIT_MS = 120_000;
-const REQUEST_TIMEOUT_MS = 280_000;
 
 const defaultSleep = (ms) => new Promise((resolve) => { setTimeout(resolve, ms); });
 
@@ -31,7 +30,7 @@ export function parseModelJson(text) {
 }
 
 export function createGeminiLlm({
-  geminiApiKey, geminiModel, geminiThinking = '', geminiRpm = 15, maxRetries = 5,
+  geminiApiKey, geminiModel, geminiThinking = '', geminiRpm = 15, geminiTimeoutSec = 90, maxRetries = 5,
   fetchImpl = fetch, now = Date.now, sleep = defaultSleep,
 }) {
   const model = geminiModel;
@@ -67,7 +66,7 @@ export function createGeminiLlm({
           method: 'POST',
           headers: { 'content-type': 'application/json', 'x-goog-api-key': geminiApiKey },
           body: JSON.stringify(requestBody(prompt, schema)),
-          signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+          signal: AbortSignal.timeout(geminiTimeoutSec * 1000),
         });
       } catch (error) {
         // Обрыв сети, DNS или тайм-аут: ответа нет вовсе, повторяем как 5xx.
