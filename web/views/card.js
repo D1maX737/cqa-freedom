@@ -39,8 +39,10 @@ function messageRow(m, cites, isVoice) {
 
 function weightLine(c) {
   if (c.type === 'flag') return html`<span>не влияет на итог</span>`;
-  const o = c.original;
+  // Показываем финальное значение: исходное видно в трёх колонках решённой апелляции.
+  const o = c.final;
   if (!o.applicable) return html`<span>вес ${c.weight}, исключён из расчёта</span>`;
+  if (o.pending) return html`<span>вес ${c.weight}, не оценён</span>`;
   return html`<span>${fmt(o.score)} из ${c.weight} балл.</span>
     <span>вес ${c.weight}${o.effective_weight !== null && o.effective_weight !== c.weight ? `, после перераспределения ${fmt(o.effective_weight)}` : ''}</span>`;
 }
