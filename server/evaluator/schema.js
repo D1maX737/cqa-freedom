@@ -18,7 +18,7 @@ export function buildResponseSchema(checklist) {
         explanation: { type: 'string' },
         evidence: { type: 'array', items: object({ msg_id: { type: 'string' }, quote: { type: 'string' } }) },
         expected_at: { type: 'array', items: { type: 'string' } },
-        na_reason: { type: ['string', 'null'] },
+        na_reason: { anyOf: [{ type: 'string' }, { type: 'null' }] },
         confidence: { type: 'number' },
       }),
     },
