@@ -26,6 +26,7 @@ export const api = {
   groups: () => request('GET', '/groups'),
   fetchDataset: (group) => request('POST', `/datasets/${encodeURIComponent(group)}/fetch`),
   importConversations: (json, group) => request('POST', `/conversations/import${query({ group })}`, json),
+  pasteConversation: (text, language) => request('POST', '/conversations/paste', { text, language }),
   conversations: (filters = {}) => request('GET', `/conversations${query(filters)}`),
   conversation: (id) => request('GET', `/conversations/${encodeURIComponent(id)}`),
   audioUrl: (id) => `${BASE}/conversations/${encodeURIComponent(id)}/audio`,

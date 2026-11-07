@@ -10,6 +10,7 @@ import { normalizeConversation } from './normalize.js';
 import { collectAccuracy } from './accuracy.js';
 import { collectOverview } from './overview.js';
 import { coachCriterion } from './coaching.js';
+import { parsePastedDialog } from './paste.js';
 import { readLabels, saveLabel, validateLabel } from './labels.js';
 import { buildEvaluationView, decisionValues, fragmentFor } from './results.js';
 
@@ -98,6 +99,20 @@ export function createApp({ db, settings, createLlm, kbDocs, fetchImpl = fetch }
     const group = typeof req.query.group === 'string' && req.query.group.trim() ? req.query.group.trim() : 'IMPORT';
     db.conversations.upsertMany(group, records);
     res.json({ group, imported: records.length });
+  });
+
+  // Свой диалог текстом «00:12 оператор: текст» — для проверки на собственном примере.
+  api.post('/conversations/paste', (req, res) => {
+    const stamp = new Date().toISOString().replace(/\D/g, '').slice(0, 17);
+    let record;
+    try {
+      record = parsePastedDialog(req.body?.text, { conversationId: `own-${stamp}`, language: req.body?.language || undefined });
+      normalizeImportBody([record]);
+    } catch (error) {
+      throw new HttpError(400, error.message);
+    }
+    db.conversations.upsertMany('OWN', [record]);
+    res.status(201).json({ conversation_id: record.conversation_id, group: 'OWN', language: record.language, turns: record.transcript.length });
   });
 
   api.get('/groups', (req, res) => res.json(db.conversations.groups()));

@@ -664,6 +664,14 @@ body.cqa-page { margin: 0; }
   .cqa .triple { grid-template-columns: 1fr; }
 }
 
+/* Свой диалог текстом */
+.cqa .paste { margin-bottom: 20px; }
+.cqa .paste__form { display: grid; gap: 10px; }
+.cqa .paste__form h2 { font-size: 18px; font-weight: 700; }
+.cqa .paste__hint { font-size: 14px; color: var(--ink-soft); max-width: 80ch; }
+.cqa .paste__form textarea { width: 100%; min-height: 160px; font: inherit; line-height: 1.5; }
+.cqa .paste__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+
 /* Точность и разметка */
 .cqa .acc-lead { flex-basis: 100%; max-width: 70ch; color: var(--ink-soft); }
 .cqa .acc-queue { display: grid; gap: 10px; margin-bottom: 24px; }

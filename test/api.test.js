@@ -401,3 +401,23 @@ test('«Как надо было ответить»: не нужна для вы
   assert.equal((await ctx.call('POST', `/evaluations/${full[0]}/coaching`, { criterion_id: 'c8' })).status, 400);
   assert.equal((await ctx.call('POST', '/evaluations/nope/coaching', { criterion_id: 'c1' })).status, 404);
 });
+
+test('свой диалог текстом добавляется в набор OWN и оценивается как обычный', async (t) => {
+  const ctx = await start();
+  t.after(ctx.close);
+  const text = '00:00 клиент: Не могу вывести деньги\n00:20 оператор: Здравствуйте, меня зовут Алия. Какое сообщение вы видите?\n00:40 клиент: Ошибка 403';
+  const added = await ctx.call('POST', '/conversations/paste', { text });
+  assert.equal(added.status, 201, JSON.stringify(added.body));
+  assert.equal(added.body.group, 'OWN');
+  assert.equal(added.body.language, 'RU');
+  assert.equal(added.body.turns, 3);
+  const id = added.body.conversation_id;
+  assert.match(id, /^own-/);
+  assert.equal((await ctx.call('GET', `/conversations/${id}`)).body.conversation.messages[1].speaker, 'operator');
+  const [evaluationId] = await evaluated(ctx, [id]);
+  assert.equal((await ctx.call('GET', `/evaluations/${evaluationId}`)).body.status, 'done');
+
+  const bad = await ctx.call('POST', '/conversations/paste', { text: 'просто текст' });
+  assert.equal(bad.status, 400);
+  assert.match(bad.body.error, /оператор: текст/);
+});

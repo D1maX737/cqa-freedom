@@ -54,7 +54,25 @@ export async function render(container, state) {
         </label>
         <button class="btn" type="submit" ${datasetReady ? '' : 'disabled'}>Загрузить из API</button>
         <label class="btn btn--ghost file">Импорт JSON<input type="file" accept="application/json,.json" data-input="import"></label>
+        <button class="btn btn--ghost" type="button" data-paste-open>Вставить диалог</button>
         ${datasetReady ? '' : html`<p class="loader__note" data-note="dataset">API организаторов не подключено: в .env на сервере нет DATASET_URL. Добавьте его и перезапустите сервер или импортируйте JSON.</p>`}
+      </form>
+    </section>
+
+    <section class="paste" data-paste hidden>
+      <form class="panel paste__form" data-form="paste">
+        <h2>Свой диалог</h2>
+        <p class="paste__hint">По строке на реплику: «00:12 оператор: текст». Время можно не указывать, роли — клиент, оператор, бот, система.
+          Диалог попадёт в набор OWN и сразу уйдёт на оценку.</p>
+        <textarea name="text" rows="8" required aria-label="Текст диалога" placeholder="00:00 клиент: Здравствуйте, не могу вывести деньги
+00:20 оператор: Здравствуйте, меня зовут Алия. Какое сообщение вы видите в приложении?
+00:45 клиент: Пишет, что вывод ограничен"></textarea>
+        <div class="paste__actions">
+          ${select('language', 'Язык', [['', 'определить сам'], ['RU', 'RU'], ['KZ', 'KZ'], ['EN', 'EN']], '')}
+          <button class="btn btn--primary" type="submit">Добавить и оценить</button>
+          <button class="btn btn--ghost" type="button" data-paste-close>Отмена</button>
+        </div>
+        <p class="label-error" data-paste-error role="alert" hidden></p>
       </form>
     </section>
 
@@ -153,6 +171,36 @@ export async function render(container, state) {
       toast(error.message, 'error');
       button.disabled = false;
       button.textContent = 'Загрузить из API';
+    }
+  });
+
+  const paste = root.querySelector('[data-paste]');
+  const pasteForm = root.querySelector('[data-form=paste]');
+  const pasteError = root.querySelector('[data-paste-error]');
+  root.querySelector('[data-paste-open]').addEventListener('click', () => {
+    paste.hidden = false;
+    pasteForm.elements.text.focus();
+  });
+  root.querySelector('[data-paste-close]').addEventListener('click', () => { paste.hidden = true; });
+  pasteForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const button = pasteForm.querySelector('button[type=submit]');
+    button.disabled = true;
+    pasteError.hidden = true;
+    try {
+      const added = await api.pasteConversation(pasteForm.elements.text.value, pasteForm.elements.language.value);
+      try {
+        await api.evaluate([added.conversation_id], ls.version);
+        toast('Диалог добавлен и отправлен на оценку');
+      } catch (error) {
+        toast(`Диалог добавлен, но оценка не запущена: ${error.message}`, 'error');
+      }
+      state.navigate(`?view=card&id=${encodeURIComponent(added.conversation_id)}`);
+      window.scrollTo(0, 0);
+    } catch (error) {
+      pasteError.textContent = error.message;
+      pasteError.hidden = false;
+      button.disabled = false;
     }
   });
 
