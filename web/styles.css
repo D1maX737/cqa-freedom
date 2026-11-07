@@ -365,3 +365,28 @@ body { margin: 0; }
 .cqa .fragment__msg.is-anchor { box-shadow: inset 0 0 0 2px var(--spruce); background: var(--mint); }
 .cqa .fragment__meta { display: block; font-size: 12px; text-decoration: none; }
 @media (max-width: 960px) { .cqa .appeal-item__body { grid-template-columns: 1fr; } }
+
+/* Редактор чек-листа */
+.cqa .editor { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 20px; align-items: start; }
+.cqa .versions { display: grid; gap: 6px; position: sticky; top: 64px; }
+.cqa .version { display: grid; gap: 2px; text-align: left; font: inherit; font-size: 14px; padding: 8px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); color: var(--ink); cursor: pointer; }
+.cqa .version span { font-size: 12px; }
+.cqa .version.is-current { border-color: var(--spruce); box-shadow: inset 3px 0 0 var(--spruce); }
+.cqa .ed-form { display: grid; gap: 14px; }
+.cqa .ed-base { font-size: 14px; color: var(--ink-soft); }
+.cqa .ed-crit, .cqa .ed-sections { display: grid; gap: 10px; margin: 0; padding: 12px 14px 14px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+.cqa .ed-crit legend, .cqa .ed-sections legend { font-weight: 600; padding: 0 4px; }
+.cqa .ed-row, .cqa .ed-na { display: flex; flex-wrap: wrap; align-items: end; gap: 10px; }
+.cqa .ed-grow { flex: 1 1 240px; }
+.cqa .ed-id input { width: 80px; }
+.cqa .ed-weight input { width: 80px; }
+.cqa .ed-scale { display: grid; gap: 8px; padding: 10px; background: var(--paper); border-radius: var(--radius); }
+.cqa .ed-step { grid-template-columns: 90px 1fr; align-items: center; }
+.cqa .check { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--ink); }
+.cqa .ed-bar { position: sticky; bottom: 0; display: grid; gap: 10px; padding: 12px 14px; background: var(--surface); border: 1px solid var(--line-strong); border-radius: var(--radius); box-shadow: 0 -4px 16px rgb(10 56 41 / 0.08); }
+.cqa .ed-sum { font-weight: 600; }
+.cqa .ed-sum--warn { color: var(--amber); }
+.cqa .ed-errors { margin: 0; padding: 8px 12px 8px 28px; background: var(--brick-bg); color: var(--brick); border-radius: var(--radius); font-size: 14px; }
+.cqa .ed-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+.cqa .ed-apply { padding-top: 10px; border-top: 1px solid var(--line); font-size: 14px; }
+@media (max-width: 960px) { .cqa .editor { grid-template-columns: 1fr; } .cqa .versions { position: static; } }
