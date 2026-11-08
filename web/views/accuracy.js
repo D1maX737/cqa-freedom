@@ -40,7 +40,7 @@ function progress(conversations, labels) {
 function results(report, criteria) {
   const { coverage } = report;
   if (!coverage.compared) {
-    return html`<div class="empty"><p>Пока не с чем сравнивать. Нужны разметка людей и оценка моделью тех же диалогов этим чек-листом.
+    return html`<div class="empty"><p>Пока не с чем сравнивать. Нужны слепая разметка и оценка моделью тех же диалогов этим чек-листом.
       Сейчас размечено ${coverage.labeled} из ${coverage.conversations}, оценено моделью ${coverage.evaluated}.</p></div>`;
   }
   const byId = new Map(criteria.map((c) => [c.id, c]));
@@ -48,7 +48,7 @@ function results(report, criteria) {
   const { gross, total_deviation: deviation, by_split: split } = report;
   return html`
     <dl class="acc-stats">
-      <div><dt>Совпадение с людьми</dt><dd>${pct(report.overall.rate)}</dd><p>${report.overall.matched} из ${report.overall.cells} ответов</p></div>
+      <div><dt>Совпадение с разметкой</dt><dd>${pct(report.overall.rate)}</dd><p>${report.overall.matched} из ${report.overall.cells} ответов</p></div>
       <div><dt>Без спорных ответов</dt><dd>${pct(report.clear.rate)}</dd><p>${report.clear.matched} из ${report.clear.cells}</p></div>
       <div><dt>Грубые ошибки</dt><dd>${gross.found} из ${gross.human}</dd><p>ложных срабатываний: ${gross.false_alarms}</p></div>
       <div><dt>Отклонение итога</dt><dd>±${num(deviation.mean)}</dd><p>в среднем, максимум ${num(deviation.max)}</p></div>
@@ -65,12 +65,12 @@ function results(report, criteria) {
           ${split.tuning.cells ? bucketRow('На них настраивали промпт', split.tuning) : ''}`)}
       </div>
     </div>
-    ${report.agreement.conversations ? html`<p class="acc-note">Люди между собой: совпало ${report.agreement.matched} из ${report.agreement.cells} ответов
-      в ${report.agreement.conversations} диалогах, размеченных несколькими людьми.</p>` : ''}
+    ${report.agreement.conversations ? html`<p class="acc-note">Размечавшие между собой: совпало ${report.agreement.matched} из ${report.agreement.cells} ответов
+      в ${report.agreement.conversations} диалогах, размеченных несколькими.</p>` : ''}
     ${report.mismatches.length ? html`<details class="acc-mismatches">
-      <summary>Расхождения с людьми: ${report.mismatches.length}</summary>
+      <summary>Расхождения с разметкой: ${report.mismatches.length}</summary>
       <div class="table-wrap"><table class="grid">
-        <thead><tr><th>Диалог</th><th>Критерий</th><th>Люди</th><th>Модель</th><th></th></tr></thead>
+        <thead><tr><th>Диалог</th><th>Критерий</th><th>Разметка</th><th>Модель</th><th></th></tr></thead>
         <tbody>${report.mismatches.map((m) => html`<tr>
           <td><a class="conv-link" href="?view=card&id=${encodeURIComponent(m.conversation_id)}" data-nav>${m.conversation_id}</a></td>
           <td>${m.criterion_id} ${byId.get(m.criterion_id)?.title ?? ''}</td>
@@ -113,7 +113,7 @@ export async function render(container, state) {
   const root = mountView(container, html`
     <section class="page-head">
       <h1>Точность</h1>
-      <p class="acc-lead">Совпадение ответов модели с ручной разметкой людей. Разметка слепая: на странице разметки ответов модели нет.</p>
+      <p class="acc-lead">Совпадение ответов модели со слепой разметкой: на странице разметки ответов модели нет. Кто размечал — ниже, в строке «Разметили»; разметчик claude — это независимая модель, а не человек.</p>
     </section>
 
     <section class="panel acc-queue" aria-labelledby="queue-title">

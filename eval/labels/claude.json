@@ -1,0 +1,2021 @@
+{
+  "labeler": "claude",
+  "labels": {
+    "p1-en-001": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.155Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-en-002": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.155Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "yes",
+          "disputed": true,
+          "note": "«Glad you got in» — краткий итог или просто вежливость"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-en-003": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.161Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-en-004": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.165Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-en-005": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.166Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-en-006": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.166Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "yes"
+        },
+        "c3": {
+          "value": "yes"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "yes"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-en-007": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.166Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na",
+          "disputed": true,
+          "note": "клиент спрашивал боту и «где», и «когда»; оператор ответил на одно — можно считать и «Нет» по c2"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "10"
+        },
+        "c5": {
+          "value": "no"
+        },
+        "c6": {
+          "value": "7"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-en-008": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.166Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "15"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "7"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-en-009": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.166Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "na"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-en-010": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.166Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-en-011": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.166Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-en-012": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.167Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-en-013": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.167Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20",
+          "disputed": true,
+          "note": "на вопрос о поиске облигаций ответил верно, но затем предложил частную платную консультацию — можно снизить"
+        },
+        "c5": {
+          "value": "no"
+        },
+        "c6": {
+          "value": "7"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "yes"
+        }
+      }
+    },
+    "p1-en-014": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.167Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "no"
+        },
+        "c4": {
+          "value": "5",
+          "disputed": true,
+          "note": "передал на проверку без срока и не ответил, будет ли ответ — между 5 и 10"
+        },
+        "c5": {
+          "value": "no"
+        },
+        "c6": {
+          "value": "4"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "yes"
+        }
+      }
+    },
+    "p1-en-015": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.167Z",
+      "criteria": {
+        "c1": {
+          "value": "no"
+        },
+        "c2": {
+          "value": "no"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "15",
+          "disputed": true,
+          "note": "первая рекомендация неверная, потом исправлена и сработала — 15 или 20"
+        },
+        "c5": {
+          "value": "no"
+        },
+        "c6": {
+          "value": "4"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-kz-001": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.168Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-kz-002": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.168Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-kz-003": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.168Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "no"
+        },
+        "c3": {
+          "value": "yes"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10",
+          "disputed": true,
+          "note": "время спросил уже после передачи вопроса — 7 или 10"
+        },
+        "c7": {
+          "value": "yes"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-kz-004": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.168Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-kz-005": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.168Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "15",
+          "disputed": true,
+          "note": "первая подсказка неверная, потом точный путь — 15 или 20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "4"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-kz-006": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.168Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-kz-007": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.169Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-kz-008": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.169Z",
+      "criteria": {
+        "c1": {
+          "value": "no"
+        },
+        "c2": {
+          "value": "no"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "no",
+          "disputed": true,
+          "note": "ответ по существу дал, но на раздражение клиента не отреагировал"
+        },
+        "c6": {
+          "value": "7"
+        },
+        "c7": {
+          "value": "no",
+          "disputed": true,
+          "note": "оператор не попрощался; клиент мог уйти сам — «Нет» или N/A"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-kz-009": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.169Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-kz-010": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.169Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-kz-011": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.169Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "na"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-kz-012": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.170Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "no",
+          "disputed": true,
+          "note": "просит прислать сообщение с экрана, хотя клиент уже написал «отклонён» — повтор или просьба о скриншоте"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "yes"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-kz-013": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.170Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20",
+          "disputed": true,
+          "note": "на вопрос ответил верно, но затем предложил частную платную консультацию — можно снизить"
+        },
+        "c5": {
+          "value": "no"
+        },
+        "c6": {
+          "value": "7"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "yes"
+        }
+      }
+    },
+    "p1-kz-014": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.170Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "7"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-kz-015": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.170Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "no"
+        },
+        "c4": {
+          "value": "5",
+          "disputed": true,
+          "note": "причину не назвал, передал на проверку — между 5 и 10"
+        },
+        "c5": {
+          "value": "no"
+        },
+        "c6": {
+          "value": "4"
+        },
+        "c7": {
+          "value": "yes"
+        },
+        "c8": {
+          "value": "yes"
+        }
+      }
+    },
+    "p1-ru-001": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.170Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-ru-002": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.171Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "yes"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20",
+          "disputed": true,
+          "note": "причину не нашёл, но дал корректный следующий шаг — 15 или 20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "yes"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-ru-003": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.171Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "yes"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "10"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "7"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-ru-004": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.171Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na",
+          "disputed": true,
+          "note": "«Вам нужны реквизиты, верно?» — подтверждение известного: N/A, «Да» или повтор вопроса"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-ru-005": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.171Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "10",
+          "disputed": true,
+          "note": "кто берёт комиссию, прямо не сказано; путь к реквизитам дан — 10 или 15"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "4"
+        },
+        "c7": {
+          "value": "yes"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-ru-006": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.172Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "yes"
+        },
+        "c3": {
+          "value": "yes"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "yes"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-ru-007": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.172Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "10"
+        },
+        "c5": {
+          "value": "no"
+        },
+        "c6": {
+          "value": "7"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-ru-008": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.172Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-ru-009": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.172Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "yes"
+        },
+        "c3": {
+          "value": "no"
+        },
+        "c4": {
+          "value": "5",
+          "disputed": true,
+          "note": "причину не назвал, передал на проверку — между 5 и 10"
+        },
+        "c5": {
+          "value": "no"
+        },
+        "c6": {
+          "value": "4"
+        },
+        "c7": {
+          "value": "yes"
+        },
+        "c8": {
+          "value": "yes"
+        }
+      }
+    },
+    "p1-ru-010": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.173Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "yes"
+        },
+        "c3": {
+          "value": "yes"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "yes"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-ru-011": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.173Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-ru-012": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.173Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "na"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-ru-013": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.173Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "yes"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-ru-014": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.174Z",
+      "criteria": {
+        "c1": {
+          "value": "no"
+        },
+        "c2": {
+          "value": "no"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "no",
+          "disputed": true,
+          "note": "ответ по существу дал, на раздражение клиента — только «Понял»"
+        },
+        "c6": {
+          "value": "7"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-ru-015": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.174Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "yes"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-ru-016": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.174Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "no"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "15",
+          "disputed": true,
+          "note": "первая рекомендация неверная, потом исправлена — 15 или 20"
+        },
+        "c5": {
+          "value": "no"
+        },
+        "c6": {
+          "value": "4"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-ru-017": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.174Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "no",
+          "disputed": true,
+          "note": "клиент уже написал, что найдёт тикер, а оператор спрашивает, знает ли он тикер — повтор или уточнение"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-ru-018": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.175Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "no"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "0"
+        },
+        "c5": {
+          "value": "no"
+        },
+        "c6": {
+          "value": "0",
+          "disputed": true,
+          "note": "«точно биржа отменяет», затем «тогда не знаю» — противоречие (0) или сбой (4)"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-ru-019": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.175Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "yes"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-ru-020": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.175Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "15"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-ru-021": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.176Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-ru-022": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.176Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "no"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "0"
+        },
+        "c5": {
+          "value": "no"
+        },
+        "c6": {
+          "value": "4"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "yes"
+        }
+      }
+    },
+    "p1-ru-023": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.176Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20",
+          "disputed": true,
+          "note": "на вопрос ответил верно, но затем предложил частную платную консультацию — можно снизить"
+        },
+        "c5": {
+          "value": "no"
+        },
+        "c6": {
+          "value": "7"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "yes"
+        }
+      }
+    },
+    "p1-ru-024": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.177Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-ru-025": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.177Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "yes",
+          "disputed": true,
+          "note": "клиент ушёл до вопроса; «С чем помочь?» — уточнение («Да») или N/A"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "na"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "na"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-ru-026": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.177Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "no"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "5",
+          "disputed": true,
+          "note": "«Всё есть в приложении» — общая подсказка (5) или ответа нет (0)"
+        },
+        "c5": {
+          "value": "no"
+        },
+        "c6": {
+          "value": "4"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-ru-027": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.178Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-ru-028": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.178Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p1-ru-029": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.179Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "no"
+        },
+        "c6": {
+          "value": "7"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "yes"
+        }
+      }
+    },
+    "p1-ru-030": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.179Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "yes"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "no"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p4-ru-001": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.180Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "na"
+        },
+        "c3": {
+          "value": "na"
+        },
+        "c4": {
+          "value": "15",
+          "disputed": true,
+          "note": "объяснил, чем занимается поддержка, но не сказал, как получить менеджера — 15 или 20"
+        },
+        "c5": {
+          "value": "no",
+          "disputed": true,
+          "note": "на обиду клиента ответил «понимаю, вас неправильно проинформировали», но до этого сухо"
+        },
+        "c6": {
+          "value": "7",
+          "disputed": true,
+          "note": "клиенту пришлось спросить, что значит «техническая часть» — 7 или 10"
+        },
+        "c7": {
+          "value": "na"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p4-ru-002": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.180Z",
+      "criteria": {
+        "c1": {
+          "value": "no",
+          "disputed": true,
+          "note": "«Да, компания Фридом Брокер, меня зовут…» — приветствие могло потеряться при распознавании"
+        },
+        "c2": {
+          "value": "yes"
+        },
+        "c3": {
+          "value": "yes"
+        },
+        "c4": {
+          "value": "15"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "10"
+        },
+        "c7": {
+          "value": "no",
+          "disputed": true,
+          "note": "поблагодарил за время и попрощался; итог был репликой раньше"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p4-ru-003": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.181Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "no",
+          "disputed": true,
+          "note": "оператор решил, что речь об изменении сведений, клиент поправил — «Нет» или сбой распознавания"
+        },
+        "c3": {
+          "value": "yes"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "7"
+        },
+        "c7": {
+          "value": "na"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p4-ru-004": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.181Z",
+      "criteria": {
+        "c1": {
+          "value": "yes"
+        },
+        "c2": {
+          "value": "yes"
+        },
+        "c3": {
+          "value": "yes"
+        },
+        "c4": {
+          "value": "20"
+        },
+        "c5": {
+          "value": "yes",
+          "disputed": true,
+          "note": "предложил почту вместо звонков, но «не пытаюсь с вами спорить» звучит раздражённо"
+        },
+        "c6": {
+          "value": "4"
+        },
+        "c7": {
+          "value": "na"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    },
+    "p4-ru-005": {
+      "checklist_version_id": "v1",
+      "labeled_at": "2026-11-08T05:39:01.181Z",
+      "criteria": {
+        "c1": {
+          "value": "no",
+          "disputed": true,
+          "note": "приветствие есть, имени не слышно — могло потеряться при распознавании"
+        },
+        "c2": {
+          "value": "yes"
+        },
+        "c3": {
+          "value": "na",
+          "disputed": true,
+          "note": "удаление счёта не выполнялось; по телефону счёт нашли без кода — N/A или «Нет»"
+        },
+        "c4": {
+          "value": "15"
+        },
+        "c5": {
+          "value": "yes"
+        },
+        "c6": {
+          "value": "7"
+        },
+        "c7": {
+          "value": "yes",
+          "disputed": true,
+          "note": "предложил помощь и поблагодарил за обращение, клиент сам завершил звонок"
+        },
+        "c8": {
+          "value": "no"
+        }
+      }
+    }
+  }
+}

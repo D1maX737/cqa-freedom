@@ -57,6 +57,6 @@ console.log(`\n${row(['Язык', 'Ответов', 'Совпадение'])}\n$
 for (const l of report.by_language) console.log(row([l.language, l.cells, pct(l.rate)]));
 
 if (report.agreement.conversations) {
-  console.log(`\nЛюди между собой: совпало ${report.agreement.matched} из ${report.agreement.cells} ответов в ${report.agreement.conversations} диалогах.`);
+  console.log(`\nРазмечавшие между собой: совпало ${report.agreement.matched} из ${report.agreement.cells} ответов в ${report.agreement.conversations} диалогах.`);
 }
-console.log(`\nРасхождений с людьми: ${report.mismatches.length}. Список — на странице «Точность».`);
+console.log(`\nРасхождений с разметкой: ${report.mismatches.length}. Список — на странице «Точность».`);
