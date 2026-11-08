@@ -118,7 +118,7 @@
     <div class="arrow">→</div>
     <div class="step key"><b>Апелляция</b><span>Решение проверяющего пересчитывает итог и учит систему</span></div>
   </div>
-  <p class="note">Сомнительные ответы модели не прячутся: критерий помечается «требует проверки человеком». Пример расчёта из задания (85,38) закреплён автотестом — всего 251 тест.</p>
+  <p class="note">Сомнительные ответы модели не прячутся: критерий помечается «требует проверки человеком». Пример расчёта из задания (85,38) закреплён автотестом — всего 253 теста.</p>
   <div class="brand">Zachaganskie Avengers</div><div class="num">3</div>
 </section>
 
@@ -159,9 +159,9 @@
     <div class="col" style="flex:1.6"><div class="shot"><img src="../docs/media/overview.png"></div></div>
     <div class="col" style="flex:1">
       <ul class="points">
-        <li>65 диалогов DEV, средний балл <strong>86,46</strong>, 34 без замечаний, 13 ниже 70.</li>
-        <li>Больше всего баллов теряется на <strong>эмпатии, консультации и завершении</strong> — с примером реплики.</li>
-        <li><strong>6 грубых ошибок</strong>: частные услуги, перевод денег лично, раскрытие данных, грубость.</li>
+        <li>65 диалогов DEV, средний балл <strong>86,42</strong> по чек-листу v2, 25 без замечаний, 11 ниже 70.</li>
+        <li>Больше всего баллов теряется на <strong>завершении, консультации и эмпатии</strong> — с примером реплики.</li>
+        <li><strong>8 грубых ошибок</strong>: частные услуги, перевод денег лично, раскрытие данных до идентификации, грубость.</li>
         <li>Считается по финальным оценкам с решениями проверяющих, без ИИ.</li>
       </ul>
     </div>
@@ -172,22 +172,22 @@
 <section class="slide">
   <h2>Точность меряем честно и вслепую</h2>
   <div class="stats">
-    <div class="stat hero"><div class="v">78,5%</div><div class="l">согласие со слепой разметкой всех 65 диалогов DEV, 520 ответов</div></div>
-    <div class="stat"><div class="v">0,72</div><div class="l">κ Коэна — согласие с поправкой на случайность</div></div>
-    <div class="stat"><div class="v">6 из 8</div><div class="l">грубых ошибок найдено, ложных срабатываний 0</div></div>
-    <div class="stat"><div class="v">6</div><div class="l">моделей сравнили на одних диалогах, включая локальные и казахскую KazLLM</div></div>
+    <div class="stat hero"><div class="v">84,6%</div><div class="l">согласие со слепой разметкой всех 65 диалогов DEV, 520 ответов; 95% ДИ 80,6–88,3%</div></div>
+    <div class="stat"><div class="v">+6,2 п. п.</div><div class="l">дал чек-лист v2 к v1 на тех же диалогах, 95% ДИ 2,5–9,8</div></div>
+    <div class="stat"><div class="v">8 из 8</div><div class="l">грубых ошибок найдено, ложных срабатываний 0</div></div>
+    <div class="stat"><div class="v">0,80</div><div class="l">κ Коэна — согласие с поправкой на случайность</div></div>
   </div>
   <div class="bars">
+    <div class="bar"><span>c8 Грубые ошибки</span><div class="t"><i style="width:100%"></i></div><b>100%</b></div>
+    <div class="bar"><span>c3 Идентификация</span><div class="t"><i style="width:98.5%"></i></div><b>98,5%</b></div>
     <div class="bar"><span>c1 Установление контакта</span><div class="t"><i style="width:96.9%"></i></div><b>96,9%</b></div>
-    <div class="bar"><span>c3 Идентификация</span><div class="t"><i style="width:96.9%"></i></div><b>96,9%</b></div>
-    <div class="bar"><span>c8 Грубые ошибки</span><div class="t"><i style="width:96.9%"></i></div><b>96,9%</b></div>
-    <div class="bar"><span>c5 Эмпатия</span><div class="t"><i style="width:92.3%"></i></div><b>92,3%</b></div>
+    <div class="bar"><span>c5 Эмпатия</span><div class="t"><i style="width:83.1%"></i></div><b>83,1%</b></div>
+    <div class="bar"><span>c7 Завершение</span><div class="t"><i style="width:81.5%"></i></div><b>81,5%</b></div>
     <div class="bar"><span>c4 Консультация</span><div class="t"><i style="width:78.5%"></i></div><b>78,5%</b></div>
-    <div class="bar"><span>c6 Ведение диалога</span><div class="t"><i style="width:72.3%"></i></div><b>72,3%</b></div>
-    <div class="bar"><span>c7 Завершение</span><div class="t"><i class="low" style="width:66.2%"></i></div><b>66,2%</b></div>
-    <div class="bar"><span>c2 Выявление потребности</span><div class="t"><i class="low" style="width:27.7%"></i></div><b>27,7%</b></div>
+    <div class="bar"><span>c2 Выявление потребности</span><div class="t"><i class="low" style="width:69.2%"></i></div><b>69,2%</b></div>
+    <div class="bar"><span>c6 Ведение диалога</span><div class="t"><i class="low" style="width:69.2%"></i></div><b>69,2%</b></div>
   </div>
-  <p class="caveat">Разметку сделала независимая модель (Claude Opus 5.5) по тексту диалогов и чек-листу, не видя ответов Gemini, — это согласие двух моделей, а не точность против людей. Главное расхождение c2: при ясном вопросе клиента пример организаторов ставит N/A, а модель «Да» — это следующее исправление в чек-листе. Второй проход-«контролёр» точность не поднял, и мы его выключили. По языкам: EN 79%, KZ 78%, RU 79%.</p>
+  <p class="caveat">Разметку сделала независимая модель (Claude Opus 5.5) по тексту диалогов и чек-листу, не видя ответов Gemini, — это согласие двух моделей, а не точность против людей. Чек-лист v2 уточнил подсказки по примеру организаторов: c2 — N/A при ясном вопросе, c7 — вежливая формула не заменяет итог, c8 — данные о счёте до идентификации. Подсказки уточняли на тех же диалогах, поэтому рост оптимистичен. Второй проход-«контролёр» точность не поднял, мы его выключили. По языкам: EN 86,7%, KZ 86,7%, RU 82,9%.</p>
   <div class="num">7</div>
 </section>
 
