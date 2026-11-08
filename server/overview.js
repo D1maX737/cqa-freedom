@@ -1,6 +1,7 @@
 // Сводка по набору для руководителя: считается по финальным оценкам (с решениями проверяющего), без ИИ.
 import { round2 } from './scoring.js';
 import { buildEvaluationView } from './results.js';
+import { latestEvaluatedVersion } from './versions.js';
 
 const BUCKETS = [
   { label: '100', test: (t) => t === 100 },
@@ -89,7 +90,7 @@ export function computeOverview({ checklist, entries }) {
 
 /** Сводка по базе: последняя завершённая оценка каждого диалога версией; заглушка не в счёт без allowMock. */
 export function collectOverview(db, { versionId, groupId, allowMock = false }) {
-  const version = versionId ? db.checklists.get(versionId) : db.checklists.list()[0];
+  const version = versionId ? db.checklists.get(versionId) : latestEvaluatedVersion(db, groupId);
   if (!version) throw new Error(`Версия чек-листа ${versionId} не найдена`);
   const entries = [];
   const models = new Set();

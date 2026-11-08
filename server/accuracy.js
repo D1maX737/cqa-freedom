@@ -2,6 +2,7 @@
 // Сравнивается исходный ответ модели, до апелляций: апелляции — это уже работа человека.
 import { round2, computeTotal } from './scoring.js';
 import { answersFrom } from './results.js';
+import { latestEvaluatedVersion } from './versions.js';
 
 /**
  * Эталон по каждому критерию из разметок одного диалога.
@@ -37,6 +38,42 @@ function cohenKappa(pairs) {
   for (const [value, k] of human) expected += (k / n) * ((model.get(value) ?? 0) / n);
   if (expected === 1) return observed === 1 ? 1 : 0;
   return round2((observed - expected) / (1 - expected));
+}
+
+// Детерминированный генератор: интервал не прыгает от запуска к запуску.
+function mulberry32(seed) {
+  let a = seed >>> 0;
+  return () => {
+    a = (a + 0x6d2b79f5) >>> 0;
+    let t = a;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/**
+ * 95% доверительный интервал доли совпадений: бутстрэп по диалогам, а не по ответам —
+ * восемь ответов одного диалога связаны между собой.
+ */
+export function bootstrapCi(perConversation, { iterations = 2000, seed = 20261108 } = {}) {
+  const items = perConversation.filter((c) => c.cells > 0);
+  if (!items.length) return null;
+  const random = mulberry32(seed);
+  const rates = [];
+  for (let i = 0; i < iterations; i += 1) {
+    let cells = 0;
+    let matched = 0;
+    for (let k = 0; k < items.length; k += 1) {
+      const pick = items[Math.floor(random() * items.length)];
+      cells += pick.cells;
+      matched += pick.matched;
+    }
+    rates.push(matched / cells);
+  }
+  rates.sort((a, b) => a - b);
+  const at = (q) => Number(rates[Math.min(rates.length - 1, Math.floor(q * rates.length))].toFixed(4));
+  return [at(0.025), at(0.975)];
 }
 
 /** Согласие людей между собой там, где диалог разметили двое и больше. */
@@ -80,6 +117,7 @@ export function computeAccuracy({ checklist, conversations, labels, modelAnswers
   const mismatches = [];
   const deviations = [];
   const pairs = [];
+  const perConversation = [];
   let compared = 0;
 
   for (const conversation of conversations) {
@@ -89,6 +127,8 @@ export function computeAccuracy({ checklist, conversations, labels, modelAnswers
     if (!model || !entries) continue;
     compared += 1;
     const gold = consensus(entries, checklist);
+    const own = { all: { cells: 0, matched: 0 }, clear: { cells: 0, matched: 0 } };
+    perConversation.push(own);
     const language = byLanguage.get(conversation.language) ?? { language: conversation.language, ...bucket() };
     byLanguage.set(conversation.language, language);
 
@@ -99,6 +139,12 @@ export function computeAccuracy({ checklist, conversations, labels, modelAnswers
       const matched = answer !== null && cell.values.includes(answer);
       for (const target of [overall, byCriterion.get(criterion.id), language, bySplit[tuning.has(id) ? 'tuning' : 'holdout']]) add(target, matched);
       if (!cell.disputed) add(clear, matched);
+      own.all.cells += 1;
+      own.all.matched += matched ? 1 : 0;
+      if (!cell.disputed) {
+        own.clear.cells += 1;
+        own.clear.matched += matched ? 1 : 0;
+      }
       pairs.push([matched ? answer : cell.values[0], answer ?? '—']);
       if (!matched) mismatches.push({ conversation_id: id, criterion_id: criterion.id, human: cell.values, model: answer, disputed: cell.disputed });
       if (criterion.type === 'flag') {
@@ -125,8 +171,8 @@ export function computeAccuracy({ checklist, conversations, labels, modelAnswers
       evaluated: conversations.filter((c) => modelAnswers[c.conversation_id]).length,
       compared,
     },
-    overall,
-    clear,
+    overall: { ...overall, ci: bootstrapCi(perConversation.map((c) => c.all)) },
+    clear: { ...clear, ci: bootstrapCi(perConversation.map((c) => c.clear)) },
     kappa: cohenKappa(pairs),
     by_criterion: [...byCriterion.values()].filter((c) => c.cells > 0),
     by_language: [...byLanguage.values()].filter((l) => l.cells > 0),
@@ -143,7 +189,7 @@ export function computeAccuracy({ checklist, conversations, labels, modelAnswers
  * Оценки заглушкой — не модель: без allowMock они не в счёт.
  */
 export function collectAccuracy(db, { versionId, groupId, labels, tuningIds = [], allowMock = false }) {
-  const version = versionId ? db.checklists.get(versionId) : db.checklists.latest();
+  const version = versionId ? db.checklists.get(versionId) : latestEvaluatedVersion(db, groupId);
   if (!version) throw new Error(`Версия чек-листа ${versionId} не найдена`);
   const conversations = db.conversations.list(groupId || undefined);
   const modelAnswers = {};

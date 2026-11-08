@@ -5,6 +5,7 @@ import { labelPrefs, nextUnlabeled } from './label.js';
 
 const LANGUAGES = [['', 'все'], ['RU', 'RU'], ['KZ', 'KZ'], ['EN', 'EN']];
 const pct = (rate) => (rate === null || rate === undefined ? '—' : `${(rate * 100).toLocaleString('ru-RU', { maximumFractionDigits: 1 })}%`);
+const ciText = (b) => (b.ci ? `, 95% ДИ ${pct(b.ci[0])}–${pct(b.ci[1])}` : '');
 const num = (n) => (n === null || n === undefined ? '—' : n.toLocaleString('ru-RU', { maximumFractionDigits: 2 }));
 
 const select = (name, label, options, current) => html`<label class="field field--inline">${label}
@@ -48,8 +49,8 @@ function results(report, criteria) {
   const { gross, total_deviation: deviation, by_split: split } = report;
   return html`
     <dl class="acc-stats">
-      <div><dt>Совпадение с разметкой</dt><dd>${pct(report.overall.rate)}</dd><p>${report.overall.matched} из ${report.overall.cells} ответов</p></div>
-      <div><dt>Без спорных ответов</dt><dd>${pct(report.clear.rate)}</dd><p>${report.clear.matched} из ${report.clear.cells}</p></div>
+      <div><dt>Совпадение с разметкой</dt><dd>${pct(report.overall.rate)}</dd><p>${report.overall.matched} из ${report.overall.cells} ответов${ciText(report.overall)}</p></div>
+      <div><dt>Без спорных ответов</dt><dd>${pct(report.clear.rate)}</dd><p>${report.clear.matched} из ${report.clear.cells}${ciText(report.clear)}</p></div>
       <div><dt>Грубые ошибки</dt><dd>${gross.found} из ${gross.human}</dd><p>ложных срабатываний: ${gross.false_alarms}</p></div>
       <div><dt>Отклонение итога</dt><dd>±${num(deviation.mean)}</dd><p>в среднем, максимум ${num(deviation.max)}</p></div>
       <div><dt>κ Коэна</dt><dd>${num(report.kappa)}</dd><p>согласие с поправкой на случайность</p></div>
@@ -95,12 +96,12 @@ export async function render(container, state) {
     [versions, groups] = await Promise.all([api.checklists(), api.groups()]);
     const group = groups.some((g) => g.group_id === queue.group) ? queue.group
       : (groups.find((g) => g.group_id === 'DEV') ?? groups[0])?.group_id ?? '';
-    // По умолчанию — чек-лист организаторов: эталон размечают по нему.
-    const version = versions.some((v) => v.id === queue.version) ? queue.version : versions[0]?.id;
+    // Без выбора — последняя версия, которой оценивали: её сервер и подставит.
+    const chosen = versions.some((v) => v.id === queue.version) ? queue.version : undefined;
+    [report, { labels }, conversations] = await Promise.all([api.accuracy({ group, version: chosen }), api.labels(), api.conversations({ group })]);
+    const version = report.checklist_version_id;
     Object.assign(queue, { group, version });
-    [report, { labels }, conversations, checklist] = await Promise.all([
-      api.accuracy({ group, version }), api.labels(), api.conversations({ group }), api.checklist(version),
-    ]);
+    checklist = await api.checklist(version);
   } catch (error) {
     if (route !== state.route) return;
     const root = mountView(container, errorPanel(error));

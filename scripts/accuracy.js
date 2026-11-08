@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Точность модели против ручной разметки из eval/labels в виде таблиц markdown для README:
-//   npm run accuracy                     → набор DEV, чек-лист организаторов (первая версия)
+//   npm run accuracy                     → набор DEV, последняя версия чек-листа, которой оценивали
 //   npm run accuracy -- DEV --checklist v1
 import { config } from '../server/config.js';
 import { openDb } from '../server/db.js';
@@ -24,7 +24,7 @@ const db = openDb(config.dbPath);
 let report;
 try {
   report = collectAccuracy(db, {
-    versionId: versionArg ?? db.checklists.list()[0]?.id,
+    versionId: versionArg,
     groupId,
     labels: readLabels(config.labelsDir),
     tuningIds: config.tuningIds,
@@ -42,8 +42,9 @@ if (report.mock_skipped) console.log(`Оценки заглушкой не уч�
 if (!coverage.compared) process.exit(0);
 
 console.log(`\n${row(['', 'Ответов', 'Совпадение'])}\n${row(['---', '---:', '---:'])}`);
-console.log(row(['Все размеченные ответы', overall.cells, `**${pct(overall.rate)}**`]));
-console.log(row(['Без спорных', clear.cells, pct(clear.rate)]));
+const ci = (b) => (b.ci ? ` (95% ДИ ${pct(b.ci[0])}–${pct(b.ci[1])})` : '');
+console.log(row(['Все размеченные ответы', overall.cells, `**${pct(overall.rate)}**${ci(overall)}`]));
+console.log(row(['Без спорных', clear.cells, `${pct(clear.rate)}${ci(clear)}`]));
 console.log(row(['Диалоги, не использованные при настройке промпта', split.holdout.cells, pct(split.holdout.rate)]));
 if (split.tuning.cells) console.log(row(['Диалоги, на которых настраивали промпт', split.tuning.cells, pct(split.tuning.rate)]));
 

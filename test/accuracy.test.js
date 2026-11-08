@@ -152,3 +152,24 @@ test('разметка сохраняется в файл размечающег
   assert.deepEqual(mine.criteria.c4, { value: '15', note: 'частично' });
   assert.ok(mine.labeled_at);
 });
+
+test('доверительный интервал: бутстрэп по диалогам, детерминирован и содержит точечную оценку', () => {
+  const many = Array.from({ length: 30 }, (_, i) => ({ conversation_id: `d${i}`, language: 'RU' }));
+  const labels = many.map((c) => label(c.conversation_id, 'dima', perfect));
+  // В каждом третьем диалоге модель ошиблась в одном критерии.
+  const modelAnswers = Object.fromEntries(many.map((c, i) => [c.conversation_id, i % 3 === 0 ? { ...perfect, c4: '15' } : perfect]));
+  const a = computeAccuracy({ checklist, conversations: many, labels, modelAnswers });
+  const b = computeAccuracy({ checklist, conversations: many, labels, modelAnswers });
+  assert.deepEqual(a.overall.ci, b.overall.ci);
+  const [low, high] = a.overall.ci;
+  assert.ok(low <= a.overall.rate && a.overall.rate <= high, `${low} ≤ ${a.overall.rate} ≤ ${high}`);
+  assert.ok(low > 0.9 && high <= 1 && high > low, `${low}–${high}`);
+  assert.equal(a.clear.ci.length, 2);
+});
+
+test('доверительный интервал при полном совпадении — точка, без сравнения — нет интервала', () => {
+  const full = computeAccuracy({ checklist, conversations, labels: [label('p1-ru-001', 'dima', perfect)], modelAnswers: { 'p1-ru-001': perfect } });
+  assert.deepEqual(full.overall.ci, [1, 1]);
+  const none = computeAccuracy({ checklist, conversations, labels: [], modelAnswers: {} });
+  assert.equal(none.overall.ci, null);
+});
